@@ -122,12 +122,7 @@ FDKernel* FDKernel::Generate(
     bool force_watcher_no_inline,
     KernelBuildOptLevel opt_level) {
     // TODO: just pass in the programmable index
-    uint32_t programmable_core_type_index =
-        (GetCoreType() == CoreType::WORKER)
-            ? MetalContext::instance().hal().get_programmable_core_type_index(HalProgrammableCoreType::TENSIX)
-        : is_active_eth_core
-            ? MetalContext::instance().hal().get_programmable_core_type_index(HalProgrammableCoreType::ACTIVE_ETH)
-            : MetalContext::instance().hal().get_programmable_core_type_index(HalProgrammableCoreType::IDLE_ETH);
+    uint32_t programmable_core_type_index = get_programmable_core_type_index(GetCoreType(), is_active_eth_core);
 
     std::map<string, string> defines = {
         {"DISPATCH_KERNEL", "1"},
