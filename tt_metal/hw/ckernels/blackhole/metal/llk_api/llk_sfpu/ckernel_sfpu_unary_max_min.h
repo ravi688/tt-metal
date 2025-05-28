@@ -42,24 +42,40 @@ inline void calculate_unary_max_min(uint value) {
 
 template <bool APPROXIMATION_MODE, int ITERATIONS = 8>
 inline void calculate_unary_max_int32(uint value) {
-    // Load value param to lreg2
-    uint32_t scalar = reinterpret_cast<uint32_t>(value);
-    // TT_SFPLOADI(p_sfpu::LREG2, 10, value & 0xFFFF);
-    // TT_SFPLOADI(p_sfpu::LREG2, 8, value >> 16);
-    _sfpu_load_imm32_(p_sfpu::LREG2, scalar);
+    //     // Load value param to lreg2
+    //     // uint32_t scalar = reinterpret_cast<uint32_t>(value);
+    //     TT_SFPLOADI(p_sfpu::LREG2, 10, value & 0xFFFF);
+    //     TT_SFPLOADI(p_sfpu::LREG2, 8, value >> 16);
+    //     // _sfpu_load_imm32_(p_sfpu::LREG2, scalar);
+
+    // #pragma GCC unroll 0
+    //     for (int d = 0; d < ITERATIONS; d++) {
+    //         constexpr uint dst_tile_size = 64;
+
+    //         // Load input to lreg0
+    //         TTI_SFPLOAD(p_sfpu::LREG0, 12, ADDR_MOD_7, 0);
+
+    //         // Copy value param to lreg1
+    //         TTI_SFPMOV(0, p_sfpu::LREG2, p_sfpu::LREG1, 0);
+
+    //         // Swap and store maximum in lreg1
+    //         TTI_SFPSWAP(0, p_sfpu::LREG1, p_sfpu::LREG0, 1);
+
+    //         TTI_SFPSTORE(p_sfpu::LREG1, 12, ADDR_MOD_7, 0);
+
+    //         dst_reg++;
+    //     }
+
+    vInt s = value;
 
 #pragma GCC unroll 0
     for (int d = 0; d < ITERATIONS; d++) {
-        constexpr uint dst_tile_size = 64;
-
-        // Load input to lreg0
-        TTI_SFPLOAD(p_sfpu::LREG0, 12, ADDR_MOD_7, 0);
-
-        TTI_SFPSTORE(p_sfpu::LREG2, 12, ADDR_MOD_7, 0);
-
+        vInt v = dst_reg[0];
+        v_if(v < s) { v = s; }
+        v_endif;
+        dst_reg[0] = v;
         dst_reg++;
     }
-}
 
 }  // namespace sfpu
 }  // namespace ckernel
