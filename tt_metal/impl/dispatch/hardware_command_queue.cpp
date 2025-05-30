@@ -231,6 +231,9 @@ void HWCommandQueue::enqueue_read_buffer(
     TT_FATAL(!this->manager_.get_bypass_mode(), "Enqueue Read Buffer cannot be used with tracing");
     Buffer& buffer_obj = get_buffer_object(buffer);
 
+    // Reading from device would clobber prefetcher cache, so reset it now
+    this->reset_prefetcher_cache_manager();
+
     // This is to make sure we block on the same sub_device_ids at the end
     // TODO: enqueue_read_from_core will call select_sub_device_ids every loop which will have minor overhead
     sub_device_ids = buffer_dispatch::select_sub_device_ids(this->device_, sub_device_ids);
@@ -251,7 +254,6 @@ void HWCommandQueue::enqueue_read_buffer(
             }
         }
     } else if (is_sharded(buffer_obj.buffer_layout())) {
-        bool reset_prefetcher_cache_manager = false;
         // Forward data from each core to the completion queue.
         // Then have the completion queue reader thread copy this data to user space.
         auto dispatch_params = buffer_dispatch::initialize_sharded_buf_read_dispatch_params(
@@ -267,16 +269,10 @@ void HWCommandQueue::enqueue_read_buffer(
                 cores[core_id],
                 MetalContext::instance().get_dispatch_core_manager().get_dispatch_core_type());
             if (dispatch_params.pages_per_txn > 0) {
-                reset_prefetcher_cache_manager = true;
                 this->issued_completion_q_reads_.push(
                     buffer_dispatch::generate_sharded_buffer_read_descriptor(dst, dispatch_params, buffer_obj));
                 this->increment_num_entries_in_completion_q();
             }
-        }
-        if (reset_prefetcher_cache_manager) {
-            // reset prefetcher cache if we have issued any reads, since cache state will not be preserved across the
-            // reads
-            this->reset_prefetcher_cache_manager();
         }
     } else {
         // Forward data from device to the completion queue.
@@ -295,9 +291,6 @@ void HWCommandQueue::enqueue_read_buffer(
             sub_device_ids,
             MetalContext::instance().get_dispatch_core_manager().get_dispatch_core_type());
         if (dispatch_params->pages_per_txn > 0) {
-            // reset prefetcher cache if we have issued any reads, since cache state will not be preserved across the
-            // reads
-            this->reset_prefetcher_cache_manager();
             this->issued_completion_q_reads_.push(
                 buffer_dispatch::generate_interleaved_buffer_read_descriptor(dst, dispatch_params, buffer_obj));
             this->increment_num_entries_in_completion_q();
@@ -454,7 +447,7 @@ void HWCommandQueue::enqueue_program(Program& program, bool blocking) {
     // Values in these commands will get updated based on kernel config ring
     // buffer state at runtime.
     auto program_sizeB = program.get_program_kernel_bins_sizeB(device_);
-    bool use_prefetcher_cache = program_sizeB <= this->prefetcher_cache_sizeB_;
+    bool use_prefetcher_cache = program_sizeB and program_sizeB <= this->prefetcher_cache_sizeB_;
     ProgramCommandSequence& cached_program_command_sequences =
         program.generate_dispatch_commands(device_, use_prefetcher_cache);
     cached_program_command_sequences.prefetcher_cache_used = use_prefetcher_cache;
@@ -499,10 +492,17 @@ void HWCommandQueue::enqueue_program(Program& program, bool blocking) {
     // the kernel config ring buffer state
     program_dispatch::ProgramDispatchMetadata dispatch_metadata;
     if (cached_program_command_sequences.prefetcher_cache_used) {
-        std::tie(dispatch_metadata.prefetcher_cache_info.is_cached, dispatch_metadata.prefetcher_cache_info.offset) =
-            this->query_prefetcher_cache(program.get_id(), program.pimpl_->program_kernel_bins_sizeB);
-        dispatch_metadata.prefetcher_cache_info.mesh_max_program_kernels_sizeB =
-            cached_program_command_sequences.kernel_bins_sizeB;
+        bool& is_cached = dispatch_metadata.prefetcher_cache_info.is_cached;
+        uint32_t& cache_offset = dispatch_metadata.prefetcher_cache_info.offset;
+        const uint32_t& program_sizeB = cached_program_command_sequences.kernel_bins_sizeB;
+        std::tie(is_cached, cache_offset) = this->query_prefetcher_cache(program.get_id(), program_sizeB);
+        TT_ASSERT(
+            cache_offset + program_sizeB <= this->prefetcher_cache_sizeB_,
+            "Prefetcher cache offset: {}, program size: {}, cache size: {}",
+            cache_offset,
+            program_sizeB,
+            this->prefetcher_cache_sizeB_);
+        dispatch_metadata.prefetcher_cache_info.mesh_max_program_kernels_sizeB = program_sizeB;
     } else {
         // prefetcher cache will be overwritten, reset for next program
         this->reset_prefetcher_cache_manager();
@@ -738,6 +738,8 @@ void HWCommandQueue::record_begin(const uint32_t tid, const std::shared_ptr<Trac
     this->tid_ = tid;
     this->trace_ctx_ = std::move(ctx);
     this->manager_.set_bypass_mode(true, true);  // start trace capture
+    // reset prefetcher cache manager, since trace capture modifies the state on host
+    this->reset_prefetcher_cache_manager();
 }
 
 void HWCommandQueue::record_end() {
