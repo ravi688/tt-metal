@@ -113,6 +113,7 @@ class TtDecoder(nn.Module):
             return_weights_and_bias=True,
         )
         C = self.conv_in_params["output_channels"]
+        self.conv_config.always_preprocess_weights = False
 
         self.tt_conv_in_weights = d_w
         self.tt_conv_in_bias = d_b
