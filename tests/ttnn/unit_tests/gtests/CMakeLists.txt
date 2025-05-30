@@ -1,24 +1,29 @@
-set(TTNN_UNIT_TESTS_SRC
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_add.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_graph_add.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_graph_basic.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_async_runtime.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_matmul_benchmark.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_multiprod_queue.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_multi_cq_multi_dev.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_launch_operation.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_graph_capture_arguments_morehdot.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_graph_capture_arguments_transpose.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_graph_query_op_constraints.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_graph_query_op_runtime.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_reflect.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_to_and_from_json.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_broadcast_to.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_sliding_window_infra.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_conv2d.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/common_test_utils.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/test_generic_op.cpp
-)
+function(setup_ttnn_test_target target_name)
+    target_link_libraries(
+        ${target_name}
+        PUBLIC
+            test_common_libs
+            ttnn
+            Metalium::Metal
+            GTest::gmock_main
+    )
+    target_include_directories(
+        ${target_name}
+        PRIVATE
+            ${UMD_HOME}
+            ${PROJECT_SOURCE_DIR}
+            ${PROJECT_SOURCE_DIR}/tt_metal
+            ${PROJECT_SOURCE_DIR}/tests
+            ${CMAKE_CURRENT_SOURCE_DIR}
+            "$<TARGET_PROPERTY:TT::NN::CPP,INCLUDE_DIRECTORIES>"
+    )
+    set_target_properties(
+        ${target_name}
+        PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY
+                ${PROJECT_BINARY_DIR}/test/ttnn
+    )
+endfunction()
 
 set(TTNN_CCL_UNIT_TESTS_SRC
     ${CMAKE_CURRENT_SOURCE_DIR}/ccl/test_erisc_data_mover_with_workers.cpp
@@ -60,8 +65,49 @@ set(TTNN_TENSOR_UNIT_TESTS_SRC
 
 set(EMITC_UNIT_TESTS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/emitc/test_sanity.cpp)
 
-add_executable(unit_tests_ttnn ${TTNN_UNIT_TESTS_SRC})
-TT_ENABLE_UNITY_BUILD(unit_tests_ttnn)
+add_library(unit_tests_ttnn_smoke OBJECT)
+add_library(TT::NN::Test::Smoke ALIAS unit_tests_ttnn_smoke)
+TT_ENABLE_UNITY_BUILD(unit_tests_ttnn_smoke)
+target_sources(
+    unit_tests_ttnn_smoke
+    PRIVATE
+        test_add.cpp
+        test_graph_add.cpp
+        test_graph_basic.cpp
+        test_async_runtime.cpp
+        test_matmul_benchmark.cpp
+        test_multiprod_queue.cpp
+        test_multi_cq_multi_dev.cpp
+        test_launch_operation.cpp
+        test_graph_capture_arguments_morehdot.cpp
+        test_graph_capture_arguments_transpose.cpp
+        test_graph_query_op_constraints.cpp
+        test_graph_query_op_runtime.cpp
+        test_reflect.cpp
+        test_to_and_from_json.cpp
+        test_broadcast_to.cpp
+        test_sliding_window_infra.cpp
+        test_conv2d.cpp
+        common_test_utils.cpp
+        test_generic_op.cpp
+)
+target_include_directories(unit_tests_ttnn_smoke PRIVATE ${PROJECT_SOURCE_DIR}/tests)
+target_link_libraries(
+    unit_tests_ttnn_smoke
+    PRIVATE
+        test_common_libs
+        TT::NN::CPP
+)
+
+add_executable(unit_tests_ttnn)
+set_target_properties(
+    unit_tests_ttnn
+    PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY
+            ${PROJECT_BINARY_DIR}/test/ttnn
+)
+target_link_libraries(unit_tests_ttnn PRIVATE TT::NN::Test::Smoke)
+
 add_executable(unit_tests_ttnn_ccl ${TTNN_CCL_UNIT_TESTS_SRC})
 add_executable(unit_tests_ttnn_ccl_ops ${TTNN_CCL_OP_TESTS_SRC})
 add_executable(unit_tests_ttnn_fabric_edm ${TTNN_FABRIC_EDM_SRC})
@@ -85,8 +131,13 @@ target_link_libraries(
 )
 
 # Set up properties for all targets
-setup_ttnn_test_target(unit_tests_ttnn)
-setup_ttnn_test_target(unit_tests_ttnn_ccl)
+target_include_directories(unit_tests_ttnn_ccl PRIVATE ${PROJECT_SOURCE_DIR}/tests)
+target_link_libraries(
+    unit_tests_ttnn_ccl
+    PRIVATE
+        test_common_libs
+        TT::NN::CPP
+)
 setup_ttnn_test_target(unit_tests_ttnn_ccl_ops)
 setup_ttnn_test_target(unit_tests_ttnn_fabric_edm)
 setup_ttnn_test_target(unit_tests_ttnn_ccl_multi_tensor)

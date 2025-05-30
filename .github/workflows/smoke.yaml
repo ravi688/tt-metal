@@ -47,7 +47,7 @@ jobs:
 
       - name: Install packages
         run: |
-          apt install ./pkgs/tt-metalium_*.deb ./pkgs/tt-metalium-jit_*.deb ./pkgs/tt-metalium-validation_*.deb
+          apt install ./pkgs/tt-metalium_*.deb ./pkgs/tt-metalium-jit_*.deb ./pkgs/tt-metalium-validation_*.deb ./pkgs/tt-nn_*.deb ./pkgs/tt-nn-validation_*.deb
 
       - name: Run a test
         id: test
@@ -59,7 +59,8 @@ jobs:
           TT_METAL_WATCHER: 5
           TT_METAL_WATCHER_TEST_MODE: 1
         run: |
-          /usr/bin/tt-metalium-validation-smoke
+          # /usr/bin/tt-metalium-validation-smoke
+          /usr/bin/tt-nn-validation-smoke
 
       - name: workaround
         run: |
