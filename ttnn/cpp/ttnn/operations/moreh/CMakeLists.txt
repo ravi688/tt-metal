@@ -141,7 +141,10 @@ target_sources(
         FILE_SET kernels
         TYPE HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
-        FILES moreh_dot/device/kernels/moreh_dot.cpp moreh_sum/device/moreh_sum_w_impl_kernels/moreh_sum_w.cpp
+        FILES
+            moreh_dot/device/kernels/moreh_dot.cpp
+            moreh_sum/device/moreh_sum_w_impl_kernels/moreh_sum_w.cpp
+            moreh_dot/device/kernels/writer_moreh_dot.cpp
 )
 
 target_include_directories(ttnn_op_moreh PRIVATE ${FixmeOpIncDirs})

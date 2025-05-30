@@ -18,7 +18,12 @@ target_sources(
         FILE_SET kernels
         TYPE HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
-        FILES device/kernels/compute/compute_interleaved_col_bcast_to.cpp
+        FILES
+            device/kernels/compute/compute_interleaved_col_bcast_to.cpp
+            device/kernels/compute/compute_interleaved_no_bcast_to.cpp
+            device/kernels/compute/compute_interleaved_row_bcast_to.cpp
+            device/kernels/compute/compute_interleaved_scalar_bcast_to.cpp
+            device/kernels/dataflow/writer_interleaved_col_bcast_to.cpp
 )
 
 target_include_directories(ttnn_op_experimental_bcast_to PRIVATE ${FixmeOpIncDirs})
