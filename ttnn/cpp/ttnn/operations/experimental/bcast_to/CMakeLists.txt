@@ -12,12 +12,30 @@ target_sources(
         device/bcast_to_utils.cpp
 )
 
+target_sources(
+    ttnn_op_experimental_bcast_to
+    PUBLIC
+        FILE_SET kernels
+        TYPE HEADERS
+        BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
+        FILES device/kernels/compute/compute_interleaved_col_bcast_to.cpp
+)
+
 target_include_directories(ttnn_op_experimental_bcast_to PRIVATE ${FixmeOpIncDirs})
 target_link_libraries(
     ttnn_op_experimental_bcast_to
     PRIVATE
         TT::Metalium
         TT::NN::Core
+)
+
+install(
+    TARGETS
+        ttnn_op_experimental_bcast_to
+    FILE_SET
+    kernels
+        DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}/tt-metalium/ttnn/cpp/ttnn/operations/experimental/bcast_to
+        COMPONENT ttnn-runtime
 )
 
 install(TARGETS ttnn_op_experimental_bcast_to LIBRARY COMPONENT tar)

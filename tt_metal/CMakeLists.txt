@@ -138,6 +138,7 @@ target_sources(
             impl/dispatch/kernels/packet_queue.hpp
             impl/dispatch/kernels/packet_queue_ctrl.hpp
             include/compute_kernel_api.h
+            include/compute_kernel_api/bcast.h
             include/compute_kernel_api/blank.h
             include/compute_kernel_api/cb_api.h
             include/compute_kernel_api/common.h
@@ -151,6 +152,7 @@ target_sources(
             include/compute_kernel_api/matmul.h
             include/compute_kernel_api/pack.h
             include/compute_kernel_api/reconfig_data_format.h
+            include/compute_kernel_api/reduce.h
             include/compute_kernel_api/reg_api.h
             include/compute_kernel_api/tile_move_copy.h
             soc_descriptors/blackhole_140_arch.yaml
