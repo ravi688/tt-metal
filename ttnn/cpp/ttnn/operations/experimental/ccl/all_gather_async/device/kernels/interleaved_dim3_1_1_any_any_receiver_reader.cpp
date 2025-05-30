@@ -63,8 +63,6 @@ void kernel_main() {
         }
     }
 
-    const uint32_t payload_size_bytes = input_tensor_page_size * contig_pages_advanced;
-
     volatile tt_l1_ptr uint32_t* out_ready_sem_addr = reinterpret_cast<volatile tt_l1_ptr uint32_t*>(out_ready_sem);
     while (slices_received < slices_expected) {
         // Do i expect more?
@@ -98,6 +96,8 @@ void kernel_main() {
             cb_reserve_back(cb_intermediate_id, num_pages_to_read);
             size_t l1_write_addr = get_write_ptr(cb_intermediate_id);
             for (uint32_t j = 0; j < num_pages_to_read; j += contig_pages_advanced) {
+                const uint32_t payload_size_bytes =
+                    input_tensor_page_size * min(num_pages_to_read - j, contig_pages_advanced);
                 uint32_t intermediate_packet_id = actual_sender_chip_id + packet_id * ring_size;
                 uint32_t intermediate_packet_first_tile_id =
                     (intermediate_packet_id % N_DRAM_BANKS) +
@@ -107,7 +107,7 @@ void kernel_main() {
 
                 noc_async_read(packet_addr, l1_write_addr, payload_size_bytes);
                 l1_write_addr += payload_size_bytes;
-                tiles_read += contig_pages_advanced;
+                tiles_read += min(num_pages_to_read - j, contig_pages_advanced);
                 packet_id++;
             }
             noc_async_read_barrier();

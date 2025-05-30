@@ -119,7 +119,8 @@ void kernel_main() {
         size_t l1_read_addr = get_read_ptr(cb_forward_id);
 
         for (uint32_t j = 0; j < num_pages_to_read; j += contig_pages_advanced) {
-            for (uint32_t i = 0; i < contig_pages_advanced; i++) {
+            const uint32_t actual_num_pages = min(num_pages_to_read - j, contig_pages_advanced);
+            for (uint32_t i = 0; i < actual_num_pages; i++) {
                 uint64_t noc0_dest_noc_addr = get_noc_addr(
                     tile_id_start + row_offset + pages_read_in_row, output_addrgen, 0 /*offset*/, 0 /*noc_id*/);
                 noc_async_write_tile(
@@ -134,7 +135,7 @@ void kernel_main() {
                 }
             }
 
-            const uint32_t payload_size_bytes = intermediate_page_size * contig_pages_advanced;
+            const uint32_t payload_size_bytes = intermediate_page_size * actual_num_pages;
 
             uint32_t intermediate_packet_id = my_chip_id + packet_id * ring_size;
             uint32_t intermediate_packet_first_tile_id =
@@ -150,7 +151,7 @@ void kernel_main() {
                 fabric_connection,
                 l1_read_addr,
                 payload_size_bytes);
-            tiles_read += contig_pages_advanced;
+            tiles_read += actual_num_pages;
             packet_id++;
         }
         cb_pop_front(cb_forward_id, num_pages_to_read);
@@ -221,6 +222,8 @@ void kernel_main() {
                 cb_wait_front(cb_forward_id, num_pages_to_read);
                 size_t l1_read_addr = get_read_ptr(cb_forward_id);
                 for (uint32_t j = 0; j < num_pages_to_read; j += contig_pages_advanced) {
+                    const uint32_t payload_size_bytes =
+                        intermediate_page_size * min(num_pages_to_read - j, contig_pages_advanced);
                     uint32_t intermediate_packet_id = actual_slice_chip_id + packet_id * ring_size;
                     uint32_t intermediate_packet_first_tile_id =
                         (intermediate_packet_id % N_DRAM_BANKS) +
@@ -233,9 +236,9 @@ void kernel_main() {
                         pkt_hdr_forward,
                         fabric_connection,
                         l1_read_addr,
-                        contig_pages_advanced * intermediate_page_size);
+                        payload_size_bytes);
 
-                    tiles_read += contig_pages_advanced;
+                    tiles_read += min(num_pages_to_read - j, contig_pages_advanced);
                     packet_id++;
                 }
                 cb_pop_front(cb_forward_id, num_pages_to_read);
@@ -266,6 +269,8 @@ void kernel_main() {
                 cb_wait_front(cb_backward_id, num_pages_to_read);
                 size_t l1_read_addr = get_read_ptr(cb_backward_id);
                 for (uint32_t j = 0; j < num_pages_to_read; j += contig_pages_advanced) {
+                    const uint32_t payload_size_bytes =
+                        intermediate_page_size * min(num_pages_to_read - j, contig_pages_advanced);
                     uint32_t intermediate_packet_id = actual_slice_chip_id + packet_id * ring_size;
                     uint32_t intermediate_packet_first_tile_id =
                         (intermediate_packet_id % N_DRAM_BANKS) +
@@ -278,9 +283,9 @@ void kernel_main() {
                         pkt_hdr_backward,
                         fabric_connection,
                         l1_read_addr,
-                        contig_pages_advanced * intermediate_page_size);
+                        payload_size_bytes);
 
-                    tiles_read += contig_pages_advanced;
+                    tiles_read += min(num_pages_to_read - j, contig_pages_advanced);
                     packet_id++;
                 }
                 cb_pop_front(cb_backward_id, num_pages_to_read);

@@ -104,11 +104,11 @@ void kernel_main() {
         uint32_t tiles_to_read = slice_num_pages;
         while (tiles_read < tiles_to_read) {
             uint32_t num_pages_to_read = std::min(tiles_to_read - tiles_read, packet_size_in_pages);
-            uint32_t payload_size_bytes = contig_pages_advanced * output_tensor_page_size;
             cb_wait_front(cb_intermediate_id, num_pages_to_read);
             size_t l1_read_addr = get_read_ptr(cb_intermediate_id);
             for (uint32_t j = 0; j < num_pages_to_read; j += contig_pages_advanced) {
-                for (uint32_t i = 0; i < contig_pages_advanced; i++) {
+                uint32_t actual_num_pages = min(num_pages_to_read - j, contig_pages_advanced);
+                for (uint32_t i = 0; i < actual_num_pages; i++) {
                     uint32_t tile_id = tile_id_start + row_offset + pages_read_in_row;
                     noc_async_write_tile(tile_id, output_tensor_addrgen, l1_read_addr);
                     pages_read_in_row += 1;
@@ -119,7 +119,7 @@ void kernel_main() {
                     l1_read_addr += output_tensor_page_size;
                 }
 
-                tiles_read += contig_pages_advanced;
+                tiles_read += actual_num_pages;
             }
             cb_pop_front(cb_intermediate_id, num_pages_to_read);
         }
