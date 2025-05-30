@@ -59,6 +59,119 @@ def randomize_torch_tensor(torch_tensor_map, tensor_shape):
     return torch_tensor
 
 
+@pytest.mark.parametrize("device_params", [{"l1_small_size": 79104}], indirect=True)
+@pytest.mark.parametrize(
+    "batch_size, input_channels, output_channels, input_height, input_width, filter_height, filter_width, stride_h, stride_w, pad_h, pad_w, groups, shard_layout, config_override",
+    (
+        (1, 3, 64, 2048, 64, 1, 1, 1, 1, 0, 0, 1, HS, None),
+        (1, 64, 128, 2048, 64, 1, 1, 1, 1, 0, 0, 1, HS, None),
+        (1, 128, 256, 2048, 64, 1, 1, 1, 1, 0, 0, 1, HS, None),
+        (1, 259, 256, 1024, 32, 1, 1, 1, 1, 0, 0, 1, HS, None),
+        (1, 256, 256, 1024, 32, 1, 1, 1, 1, 0, 0, 1, HS, None),
+    ),
+)
+@pytest.mark.parametrize(
+    "weights_dtype",
+    [ttnn.bfloat8_b],
+)
+@pytest.mark.parametrize(
+    "activations_dtype",
+    [ttnn.bfloat8_b],
+)
+@pytest.mark.parametrize("math_fidelity", [ttnn.MathFidelity.LoFi])
+@pytest.mark.parametrize("output_layout", [ttnn.TILE_LAYOUT])
+@pytest.mark.parametrize("auto_shard", [False], ids=["no_auto_shard"])
+def test_conv2d_for_DETR3D(
+    device,
+    torch_tensor_map,
+    use_program_cache,
+    math_fidelity,
+    activations_dtype,
+    weights_dtype,
+    batch_size,
+    output_channels,
+    input_channels,
+    input_height,
+    input_width,
+    filter_height,
+    filter_width,
+    stride_h,
+    stride_w,
+    pad_h,
+    pad_w,
+    shard_layout,
+    config_override,
+    groups,
+    output_layout,
+    auto_shard,
+):
+    run_conv(
+        device,
+        torch_tensor_map,
+        math_fidelity,
+        activations_dtype,
+        weights_dtype,
+        batch_size,
+        output_channels,
+        input_channels,
+        input_height,
+        input_width,
+        filter_height,
+        filter_width,
+        stride_h,
+        stride_w,
+        padding=(pad_h, pad_w),
+        config_override=config_override,
+        dilation_h=1,
+        dilation_w=1,
+        transpose_shards=True,  # https://github.com/tenstorrent/tt-metal/issues/17897
+        fp32_accum=False,
+        packer_l1_acc=False,
+        input_layout=ttnn.TILE_LAYOUT,
+        output_layout=ttnn.TILE_LAYOUT,
+        deallocate_activation=False,
+        groups=1,
+        has_bias=True,
+        shard_layout=shard_layout,
+        auto_shard=False,
+        memory_config=None,
+        input_mesh_mapper=None,
+        weight_mesh_mapper=None,
+        output_mesh_composer=None,
+        enable_split_reader=False,
+        activation="",
+        preprocess_weights_on_device=True,
+        in_place=False,
+        run_twice=False,
+        fast_compare=False,
+        slice_config=None,
+        enable_kernel_stride_folding=False,
+    )
+    # run_conv(
+    #     device,
+    #     torch_tensor_map,
+    #     math_fidelity,
+    #     activations_dtype,
+    #     weights_dtype,
+    #     batch_size,
+    #     output_channels,
+    #     input_channels,
+    #     input_height,
+    #     input_width,
+    #     filter_height,
+    #     filter_width,
+    #     stride_h,
+    #     stride_w,
+    #     (pad_h, pad_w),
+    #     config_override,
+    #     groups=groups,
+    #     output_layout=output_layout,
+    #     has_bias=False,
+    #     auto_shard=auto_shard,
+    #     shard_layout=shard_layout,
+    # )
+
+
 def run_conv(
     device,
     torch_tensor_map,
@@ -268,6 +381,13 @@ def run_conv(
             return_output_dim=True,
             return_weights_and_bias=True,
         )
+    print(
+        "conv output ",
+        tt_output_tensor_on_device.shape,
+        tt_output_tensor_on_device.dtype,
+        tt_output_tensor_on_device.memory_config(),
+        tt_output_tensor_on_device.layout,
+    )
     tt_output_tensor = ttnn.from_device(tt_output_tensor_on_device)
     out = ttnn.to_torch(tt_output_tensor, mesh_composer=output_mesh_composer)
     # out is in row major layout and NHWC shape

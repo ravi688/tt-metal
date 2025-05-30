@@ -12,12 +12,19 @@ from tests.ttnn.utils_for_testing import assert_with_pcc
 from models.utility_functions import skip_for_wormhole_b0
 
 
-@pytest.mark.parametrize("h", [32])
-@pytest.mark.parametrize("w", [64])
+@pytest.mark.parametrize(
+    "h, w",
+    [
+        (2048, 256),
+        (1024, 256),
+        (128, 256),
+        # add more (h, w) pairs here if needed
+    ],
+)
 def test_layer_norm(device, h, w):
     torch.manual_seed(0)
 
-    torch_input_tensor = torch.rand((h, w), dtype=torch.bfloat16)
+    torch_input_tensor = torch.rand((h, 1, w), dtype=torch.bfloat16)
     torch_output_tensor = torch.nn.functional.layer_norm(torch_input_tensor, normalized_shape=[w])
 
     input_tensor = ttnn.from_torch(torch_input_tensor, layout=ttnn.TILE_LAYOUT, device=device)

@@ -282,6 +282,55 @@ def run_max_pool(
         assert ttnn.get_memory_config(output) == memory_config
 
 
+@pytest.mark.parametrize("device_params", [{"l1_small_size": 79104}], indirect=True)
+@pytest.mark.parametrize(
+    "act_shape",  ## NCHW
+    (([1, 256, 2048, 64],)),  ## resnet shapes
+)
+@pytest.mark.parametrize(
+    "kernel_size",
+    ((1, 64),),
+)
+@pytest.mark.parametrize(
+    "padding",
+    ((0, 0),),
+)
+@pytest.mark.parametrize(
+    "stride",
+    ((1, 1),),
+)
+@pytest.mark.parametrize("dilation", ((1, 1),))  ## default
+@pytest.mark.parametrize(
+    "dtype",
+    [
+        ttnn.bfloat16,
+        ttnn.bfloat8_b,
+    ],
+)
+@pytest.mark.parametrize(
+    "ceil_mode",
+    [
+        False,
+        True,
+    ],
+)
+def test_run_max_pool_detr3d(
+    act_shape, kernel_size, padding, stride, dilation, device, torch_tensor_map, dtype, use_program_cache, ceil_mode
+):
+    run_max_pool(
+        act_shape,
+        kernel_size,
+        padding,
+        stride,
+        dilation,
+        device,
+        torch_tensor_map,
+        dtype,
+        shard_scheme=None,  # ttnn.TensorMemoryLayout.HEIGHT_SHARDED,
+        ceil_mode=ceil_mode,
+    )
+
+
 @pytest.mark.parametrize("device_params", [{"l1_small_size": 24576}], indirect=True)
 @pytest.mark.parametrize(
     "act_shape",  ## NCHW

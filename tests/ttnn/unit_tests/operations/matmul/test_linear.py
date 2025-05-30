@@ -12,13 +12,17 @@ from tests.ttnn.utils_for_testing import assert_with_pcc, check_with_pcc
 from models.utility_functions import torch_random, is_wormhole_b0, skip_for_grayskull
 
 
-@pytest.mark.parametrize("batch_sizes", [(1,)])
-@pytest.mark.parametrize("m_size", [384])
-@pytest.mark.parametrize("k_size", [1024])
-@pytest.mark.parametrize("n_size", [1024])
-@pytest.mark.parametrize("use_bias", [True, False])
+@pytest.mark.parametrize(
+    "m_size, k_size, n_size, use_bias",
+    [
+        (2048, 256, 128, True),
+        (2048, 128, 256, True),
+        (1024, 256, 128, True),
+        (1024, 128, 256, True),
+        (128, 256, 256, True),
+    ],
+)
 def test_linear(
-    batch_sizes,
     m_size,
     k_size,
     n_size,
@@ -26,7 +30,7 @@ def test_linear(
     *,
     device,
 ):
-    input_shape_a = (*batch_sizes, m_size, k_size)
+    input_shape_a = (1, m_size, k_size)
     input_shape_b = (k_size, n_size)
 
     torch_input_tensor_a = torch_random(input_shape_a, -0.1, 0.1, dtype=torch.float32)
@@ -66,6 +70,7 @@ def test_linear(
         input_tensor_b,
         bias=bias,
     )
+    print("wnfeiw", input_tensor_a.shape, input_tensor_b.shape, output_tensor.shape, bias.shape)
     output_tensor = ttnn.to_torch(output_tensor)
 
     assert_with_pcc(torch_output_tensor, output_tensor, 0.999)

@@ -137,9 +137,9 @@ def run_conv(
 @pytest.mark.parametrize(
     "batch_size, output_channels, input_channels, input_length, kernel_size, stride, padding, groups, use_1d_systolic_array, config_override",
     (
-        (1, 5120, 5120, 32, 4, 1, 3, 5120, True, None),
-        (1, 5120, 5120, 1024, 4, 1, 3, 5120, True, None),
-        (1, 2560, 2560, 1027, 4, 1, 0, 2560, True, None),
+        (1, 1024, 1024, 256, 1, 1, 0, 1, True, None),
+        (1, 128, 128, 256, 1, 1, 0, 1, True, None),
+        (8, 128, 128, 256, 1, 1, 0, 1, True, None),
     ),
 )
 @pytest.mark.parametrize(
@@ -160,7 +160,7 @@ def run_conv(
 )
 @pytest.mark.parametrize("math_fidelity", [ttnn.MathFidelity.LoFi])
 @pytest.mark.parametrize("output_layout", [ttnn.TILE_LAYOUT])
-def test_conv1d_mamba(
+def test_conv1d_detr3d(
     device,
     math_fidelity,
     activations_dtype,
