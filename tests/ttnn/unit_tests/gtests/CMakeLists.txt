@@ -87,13 +87,24 @@ target_sources(
         test_to_and_from_json.cpp
         test_broadcast_to.cpp
         test_sliding_window_infra.cpp
-        test_conv2d.cpp
         common_test_utils.cpp
         test_generic_op.cpp
 )
 target_include_directories(unit_tests_ttnn_smoke PRIVATE ${PROJECT_SOURCE_DIR}/tests)
 target_link_libraries(
     unit_tests_ttnn_smoke
+    PRIVATE
+        test_common_libs
+        TT::NN::CPP
+)
+
+add_library(unit_tests_ttnn_basic OBJECT)
+add_library(TT::NN::Test::Basic ALIAS unit_tests_ttnn_basic)
+TT_ENABLE_UNITY_BUILD(unit_tests_ttnn_basic)
+target_sources(unit_tests_ttnn_basic PRIVATE test_conv2d.cpp)
+target_include_directories(unit_tests_ttnn_basic PRIVATE ${PROJECT_SOURCE_DIR}/tests)
+target_link_libraries(
+    unit_tests_ttnn_basic
     PRIVATE
         test_common_libs
         TT::NN::CPP
@@ -106,7 +117,12 @@ set_target_properties(
         RUNTIME_OUTPUT_DIRECTORY
             ${PROJECT_BINARY_DIR}/test/ttnn
 )
-target_link_libraries(unit_tests_ttnn PRIVATE TT::NN::Test::Smoke)
+target_link_libraries(
+    unit_tests_ttnn
+    PRIVATE
+        TT::NN::Test::Smoke
+        TT::NN::Test::Basic
+)
 
 add_executable(unit_tests_ttnn_ccl ${TTNN_CCL_UNIT_TESTS_SRC})
 add_executable(unit_tests_ttnn_ccl_ops ${TTNN_CCL_OP_TESTS_SRC})
