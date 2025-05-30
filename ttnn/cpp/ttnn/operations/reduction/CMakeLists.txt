@@ -31,12 +31,30 @@ target_sources(
         reduction_common/reduction_common.cpp
 )
 
+target_sources(
+    ttnn_op_reduction
+    PUBLIC
+        FILE_SET kernels
+        TYPE HEADERS
+        BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
+        FILES argmax/device/kernels/reader_argmax_interleaved.cpp
+)
+
 target_include_directories(ttnn_op_reduction PRIVATE ${FixmeOpIncDirs})
 target_link_libraries(
     ttnn_op_reduction
     PRIVATE
         TT::Metalium
         TT::NN::Core
+)
+
+install(
+    TARGETS
+        ttnn_op_reduction
+    FILE_SET
+    kernels
+        DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}/tt-metalium/ttnn/cpp/ttnn/operations/reduction
+        COMPONENT ttnn-runtime
 )
 
 install(TARGETS ttnn_op_reduction LIBRARY COMPONENT tar)
