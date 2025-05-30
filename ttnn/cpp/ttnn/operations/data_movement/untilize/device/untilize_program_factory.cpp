@@ -954,7 +954,7 @@ operation::ProgramWithCallbacks untilize_multi_core(
     }
 
     // Compute kernel
-    std::string compute_kernel = get_compute_kernel(ntiles_per_block, use_pack_untilize, a.get_dtype());
+    std::string compute_kernel = get_compute_kernel(num_tiles_per_block, use_pack_untilize, a.get_dtype());
 
     // Compute compile-time args
     if (core_range.ranges().size() > 0) {
@@ -1011,7 +1011,7 @@ operation::ProgramWithCallbacks untilize_multi_core(
         std::vector<uint32_t> reader_run_time_args;
         if (input_is_sharded) {
             // Sharded input
-            reader_rtreader_run_time_args_args = {num_tiles_to_read};
+            reader_run_time_args = {num_tiles_to_read};
         } else {
             // Interleaved input
             reader_run_time_args = {
@@ -1319,7 +1319,7 @@ operation::ProgramWithCallbacks untilize_single_core(
         uint32_t(src0_cb_index),
         uint32_t(output_cb_index)};
 
-    std::string compute_kernel = get_compute_kernel(ntiles_per_block, use_pack_untilize, a.get_dtype());
+    std::string compute_kernel = get_compute_kernel(num_tiles_per_block, use_pack_untilize, a.get_dtype());
     auto untilize_kernel_id = tt::tt_metal::CreateKernel(
         program,
         compute_kernel,

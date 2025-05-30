@@ -86,7 +86,7 @@ std::vector<ttnn::TensorSpec> Untilize::compute_output_specs(const std::vector<T
     DataType output_dtype =
         input_tensor.get_dtype() == DataType::BFLOAT8_B ? DataType::BFLOAT16 : input_tensor.get_dtype();
 
-    bool input_is_sharded = input_tensor_a.is_sharded();
+    bool input_is_sharded = input_tensor.is_sharded();
     bool output_is_sharded = this->output_mem_config.is_sharded();
     if (input_is_sharded && output_is_sharded) {
         // Sharded to sharded
