@@ -105,12 +105,32 @@ target_sources(
         view/view.cpp
 )
 
+target_sources(
+    ttnn_op_data_movement
+    PUBLIC
+        FILE_SET kernels
+        TYPE HEADERS
+        BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
+        FILES
+            reshape_view/device/device/rm_reshape_interleaved.cpp
+            permute/device/kernels/compute/transpose_xw_rm_single_tile_size.cpp
+)
+
 target_include_directories(ttnn_op_data_movement PRIVATE ${FixmeOpIncDirs})
 target_link_libraries(
     ttnn_op_data_movement
     PRIVATE
         TT::Metalium
         TT::NN::Core
+)
+
+install(
+    TARGETS
+        ttnn_op_data_movement
+    FILE_SET
+    kernels
+        DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}/tt-metalium/ttnn/cpp/ttnn/operations/data_movement
+        COMPONENT ttnn-runtime
 )
 
 install(TARGETS ttnn_op_data_movement LIBRARY COMPONENT tar)

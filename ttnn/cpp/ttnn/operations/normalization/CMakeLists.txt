@@ -26,12 +26,30 @@ target_sources(
         rmsnorm/rmsnorm.cpp
 )
 
+target_sources(
+    ttnn_op_normalization
+    PUBLIC
+        FILE_SET kernels
+        TYPE HEADERS
+        BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
+        FILES softmax/device/kernels/compute/softmax.cpp
+)
+
 target_include_directories(ttnn_op_normalization PRIVATE ${FixmeOpIncDirs})
 target_link_libraries(
     ttnn_op_normalization
     PRIVATE
         TT::Metalium
         TT::NN::Core
+)
+
+install(
+    TARGETS
+        ttnn_op_normalization
+    FILE_SET
+    kernels
+        DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}/tt-metalium/ttnn/cpp/ttnn/operations/normalization
+        COMPONENT ttnn-runtime
 )
 
 install(TARGETS ttnn_op_normalization LIBRARY COMPONENT tar)
