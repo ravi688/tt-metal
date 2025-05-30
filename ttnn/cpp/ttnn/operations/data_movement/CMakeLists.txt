@@ -114,6 +114,7 @@ target_sources(
         FILES
             reshape_view/device/device/rm_reshape_interleaved.cpp
             permute/device/kernels/compute/transpose_xw_rm_single_tile_size.cpp
+            common/kernels/common.hpp
 )
 
 target_include_directories(ttnn_op_data_movement PRIVATE ${FixmeOpIncDirs})

@@ -142,9 +142,12 @@ target_sources(
             include/compute_kernel_api/cb_api.h
             include/compute_kernel_api/common.h
             include/compute_kernel_api/common_globals.h
+            include/compute_kernel_api/eltwise_binary.h
             include/compute_kernel_api/eltwise_unary/eltwise_unary.h
             include/compute_kernel_api/eltwise_unary/exp.h
+            include/compute_kernel_api/eltwise_unary/relu.h
             include/compute_kernel_api/eltwise_unary/sfpu_split_includes.h
+            include/compute_kernel_api/eltwise_unary/sqrt.h
             include/compute_kernel_api/matmul.h
             include/compute_kernel_api/pack.h
             include/compute_kernel_api/reconfig_data_format.h

@@ -509,6 +509,7 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.23)
                 inc/risc_common.h
                 inc/tensix_functions.h
                 inc/utils/utils.h
+                inc/utils/bfloat16.h
                 inc/vptr_uint.h
                 inc/wormhole/c_tensix_core.h
                 inc/wormhole/core_config.h
