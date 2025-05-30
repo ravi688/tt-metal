@@ -82,7 +82,6 @@ target_sources(
         test_graph_capture_arguments_morehdot.cpp
         test_graph_capture_arguments_transpose.cpp
         test_graph_query_op_constraints.cpp
-        test_graph_query_op_runtime.cpp
         test_reflect.cpp
         test_to_and_from_json.cpp
         test_broadcast_to.cpp
@@ -101,7 +100,12 @@ target_link_libraries(
 add_library(unit_tests_ttnn_basic OBJECT)
 add_library(TT::NN::Test::Basic ALIAS unit_tests_ttnn_basic)
 TT_ENABLE_UNITY_BUILD(unit_tests_ttnn_basic)
-target_sources(unit_tests_ttnn_basic PRIVATE test_conv2d.cpp)
+target_sources(
+    unit_tests_ttnn_basic
+    PRIVATE
+        test_conv2d.cpp
+        test_graph_query_op_runtime.cpp
+)
 target_include_directories(unit_tests_ttnn_basic PRIVATE ${PROJECT_SOURCE_DIR}/tests)
 target_link_libraries(
     unit_tests_ttnn_basic
