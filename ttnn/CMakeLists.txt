@@ -595,3 +595,5 @@ add_subdirectory(cpp/ttnn/operations/transformer)
 add_subdirectory(cpp/ttnn/operations/uniform)
 add_subdirectory(cpp/ttnn/operations/pool)
 add_subdirectory(cpp/ttnn/operations/normalization)
+
+add_subdirectory(cpp/ttnn/deprecated)
