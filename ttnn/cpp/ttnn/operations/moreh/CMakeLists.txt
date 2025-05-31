@@ -147,6 +147,7 @@ target_sources(
             moreh_dot/device/kernels/writer_moreh_dot.cpp
             moreh_dot/device/kernels/reader_moreh_dot.cpp
             moreh_sum/device/moreh_sum_w_impl_kernels/writer_moreh_sum_w.cpp
+            moreh_sum/device/moreh_sum_w_impl_kernels/reader_moreh_sum_w.cpp
 )
 
 target_include_directories(ttnn_op_moreh PRIVATE ${FixmeOpIncDirs})
