@@ -159,6 +159,7 @@ target_sources(
             include/compute_kernel_api/reg_api.h
             include/compute_kernel_api/softmax.h
             include/compute_kernel_api/tile_move_copy.h
+            include/compute_kernel_api/transpose_wh.h
             soc_descriptors/blackhole_140_arch.yaml
             soc_descriptors/wormhole_b0_80_arch.yaml
             third_party/tt_llk/tt_llk_blackhole/common/inc/ckernel.h
