@@ -16,6 +16,7 @@ target_sources(
             tt_dnn/kernels/compute/moreh_common.hpp
             tt_dnn/kernels/dataflow/moreh_common.hpp
             tt_dnn/kernels/dataflow/generate_mm_scaler.hpp
+            tt_dnn/kernels/dataflow/generate_bcast_scalar.hpp
 )
 
 install(
