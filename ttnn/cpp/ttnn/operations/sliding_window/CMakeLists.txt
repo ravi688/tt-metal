@@ -12,6 +12,17 @@ target_sources(
         sliding_window.cpp
 )
 
+# #[[
+target_sources(
+    ttnn_op_sliding_window
+    PUBLIC
+        FILE_SET kernels
+        TYPE HEADERS
+        BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
+        FILES halo/device/kernels/dataflow/halo_gather.cpp
+)
+#]]
+
 target_include_directories(ttnn_op_sliding_window PRIVATE ${FixmeOpIncDirs})
 target_link_libraries(
     ttnn_op_sliding_window
@@ -20,4 +31,12 @@ target_link_libraries(
         TT::NN::Core
 )
 
+install(
+    TARGETS
+        ttnn_op_sliding_window
+    FILE_SET
+    kernels
+        DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}/tt-metalium/ttnn/cpp/ttnn/operations/sliding_window
+        COMPONENT ttnn-runtime
+)
 install(TARGETS ttnn_op_sliding_window LIBRARY COMPONENT tar)
