@@ -903,6 +903,11 @@ void FDMeshCommandQueue::enqueue_trace(const MeshTraceId& trace_id, bool blockin
         trace_dispatch::issue_trace_commands(
             mesh_device_, device->sysmem_manager(), dispatch_md, id_, expected_num_workers_completed_, dispatch_core_);
     }
+
+    // Reset the prefetcher cache manager, since trace capture modifies the state on host for subsequent non-trace
+    // programs
+    this->reset_prefetcher_cache_manager();
+
     trace_dispatch::update_worker_state_post_trace_execution(
         trace_inst->desc->descriptors,
         *worker_launch_message_buffer_state_,
@@ -951,6 +956,9 @@ void FDMeshCommandQueue::record_end() {
     for (auto device : mesh_device_->get_devices()) {
         device->sysmem_manager().set_bypass_mode(/*enable*/ false, /*clear*/ true);
     }
+    // Reset the prefetcher cache manager, since trace capture modifies the state on host for subsequent non-trace
+    // programs
+    this->reset_prefetcher_cache_manager();
 }
 
 SystemMemoryManager& FDMeshCommandQueue::reference_sysmem_manager() {

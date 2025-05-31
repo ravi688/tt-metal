@@ -1279,7 +1279,7 @@ ProgramCommandSequence& Program::generate_dispatch_commands(IDevice* device, boo
     return cached_program_command_sequences[command_hash];
 }
 
-void ProgramImpl::generate_trace_dispatch_commands(IDevice* device) {
+ProgramCommandSequence& ProgramImpl::generate_trace_dispatch_commands(IDevice* device, bool use_prefetcher_cache) {
     uint64_t command_hash = *device->get_active_sub_device_manager_id();
 
     uint64_t device_hash = BuildEnvManager::get_instance().get_device_build_env(device->build_id()).build_key;
@@ -1303,11 +1303,14 @@ void ProgramImpl::generate_trace_dispatch_commands(IDevice* device) {
         ProgramCommandSequence program_command_sequence;
         program_dispatch::insert_empty_program_dispatch_preamble_cmd(program_command_sequence);
         program_dispatch::insert_stall_cmds(program_command_sequence, sub_device_id, device);
-        program_dispatch::assemble_device_commands(program_command_sequence, *this, device, sub_device_id, false);
+        program_dispatch::assemble_device_commands(
+            program_command_sequence, *this, device, sub_device_id, use_prefetcher_cache);
         // TODO: We currently do not have a mechanism of removing entries in the cache when a manager is removed
         // This means programs will contain stale entries in the cache until the program is deleted
         trace_cached_program_command_sequences.insert({command_hash, std::move(program_command_sequence)});
     }
+
+    return trace_cached_program_command_sequences[command_hash];
 }
 
 void Program::allocate_kernel_bin_buf_on_device(IDevice* device) {

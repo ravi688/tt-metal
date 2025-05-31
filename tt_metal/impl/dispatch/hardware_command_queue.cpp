@@ -455,7 +455,8 @@ void HWCommandQueue::enqueue_program(Program& program, bool blocking) {
     program.set_last_used_command_queue_for_testing(this);
 
     if (this->manager_.get_bypass_mode()) {
-        this->trace_nodes_.push_back(program_dispatch::create_trace_node(program.impl(), device_));
+        this->trace_nodes_.push_back(
+            program_dispatch::create_trace_node(program.impl(), device_, use_prefetcher_cache, program_sizeB));
         return;
     }
 
@@ -611,6 +612,10 @@ void HWCommandQueue::enqueue_trace(const uint32_t trace_id, bool blocking) {
         id_,
         this->expected_num_workers_completed_,
         virtual_enqueue_program_dispatch_core_);
+
+    // Reset the prefetcher cache manager, since trace capture modifies the state on host for subsequent non-trace
+    // programs
+    this->reset_prefetcher_cache_manager();
 
     trace_dispatch::update_worker_state_post_trace_execution(
         trace_inst->desc->descriptors,
@@ -779,6 +784,10 @@ void HWCommandQueue::record_end() {
         uint64_t command_hash = *device_->get_active_sub_device_manager_id();
         auto& cached_program_command_sequence = program.get_trace_cached_program_command_sequences().at(command_hash);
         auto& worker_launch_message_buffer_state = (*this->worker_launch_message_buffer_state_)[*sub_device_id];
+        dispatch_metadata.prefetcher_cache_info = {
+            .mesh_max_program_kernels_sizeB = cached_program_command_sequence.kernel_bins_sizeB,
+            .is_cached = false,
+            .offset = 0};
         // Update the generated dispatch commands based on the state of the CQ and the ring buffer
         program_dispatch::update_traced_program_dispatch_commands(
             node,
@@ -842,6 +851,10 @@ void HWCommandQueue::record_end() {
         this->expected_num_workers_completed_reset_,
         this->config_buffer_mgr_reset_);
     this->manager_.set_bypass_mode(false, true);  // stop trace capture
+
+    // Reset the prefetcher cache manager, since trace capture modifies the state on host for subsequent non-trace
+    // programs
+    this->reset_prefetcher_cache_manager();
 }
 
 void HWCommandQueue::terminate() {
