@@ -16,7 +16,14 @@ target_sources(
         conv_transpose2d/prepare_conv_transpose2d_weights.cpp
         conv2d/prepare_conv2d_weights.cpp
         conv1d/conv1d.cpp
-        conv2d/device/kernels/conv_bmm_tilize_col_major_out_blocks.cpp
+)
+target_sources(
+    ttnn_op_conv
+    PUBLIC
+        FILE_SET kernels
+        TYPE HEADERS
+        BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
+        FILES conv2d/device/kernels/conv_bmm_tilize_col_major_out_blocks.cpp
 )
 
 target_include_directories(ttnn_op_conv PRIVATE ${FixmeOpIncDirs})
@@ -27,4 +34,12 @@ target_link_libraries(
         TT::NN::Core
 )
 
+install(
+    TARGETS
+        ttnn_op_conv
+    FILE_SET
+    kernels
+        DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}/tt-metalium/ttnn/cpp/ttnn/operations/conv
+        COMPONENT ttnn-runtime
+)
 install(TARGETS ttnn_op_conv LIBRARY COMPONENT tar)
