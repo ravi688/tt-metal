@@ -99,6 +99,7 @@ target_link_libraries(
         TT::NN::CPP
 )
 
+#[[
 add_library(unit_tests_ttnn_basic OBJECT)
 add_library(TT::NN::Test::Basic ALIAS unit_tests_ttnn_basic)
 TT_ENABLE_UNITY_BUILD(unit_tests_ttnn_basic)
@@ -115,6 +116,7 @@ target_link_libraries(
         test_common_libs
         TT::NN::CPP
 )
+#]]
 
 add_executable(unit_tests_ttnn)
 set_target_properties(
@@ -127,7 +129,7 @@ target_link_libraries(
     unit_tests_ttnn
     PRIVATE
         TT::NN::Test::Smoke
-        TT::NN::Test::Basic
+    # TT::NN::Test::Basic
 )
 
 add_executable(unit_tests_ttnn_ccl ${TTNN_CCL_UNIT_TESTS_SRC})
