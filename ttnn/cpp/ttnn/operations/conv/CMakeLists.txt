@@ -16,6 +16,7 @@ target_sources(
         conv_transpose2d/prepare_conv_transpose2d_weights.cpp
         conv2d/prepare_conv2d_weights.cpp
         conv1d/conv1d.cpp
+        conv2d/device/kernels/conv_bmm_tilize_col_major_out_blocks.cpp
 )
 
 target_include_directories(ttnn_op_conv PRIVATE ${FixmeOpIncDirs})
