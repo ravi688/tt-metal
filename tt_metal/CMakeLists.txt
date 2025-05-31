@@ -146,6 +146,8 @@ target_sources(
             include/compute_kernel_api/eltwise_binary.h
             include/compute_kernel_api/eltwise_unary/eltwise_unary.h
             include/compute_kernel_api/eltwise_unary/exp.h
+            include/compute_kernel_api/eltwise_unary/negative.h
+            include/compute_kernel_api/eltwise_unary/recip.h
             include/compute_kernel_api/eltwise_unary/relu.h
             include/compute_kernel_api/eltwise_unary/sfpu_split_includes.h
             include/compute_kernel_api/eltwise_unary/sqrt.h

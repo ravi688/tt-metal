@@ -27,6 +27,7 @@ target_sources(
             device/kernels/compute/eltwise_sfpu.cpp
             device/kernels/dataflow/reader_unary_interleaved_start_id.cpp
             device/kernels/dataflow/writer_unary_interleaved_start_id.cpp
+            device/kernels/dataflow/reader_unary_sharded.cpp
 )
 
 target_include_directories(ttnn_op_eltwise_unary PRIVATE ${FixmeOpIncDirs})
