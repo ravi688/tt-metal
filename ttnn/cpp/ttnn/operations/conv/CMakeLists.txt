@@ -29,7 +29,9 @@ target_sources(
         FILE_SET kernels
         TYPE HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
-        FILES conv2d/device/kernels/conv_bmm_tilize_col_major_out_blocks.cpp
+        FILES
+            conv2d/device/kernels/conv_bmm_tilize_col_major_out_blocks.cpp
+            conv2d/device/kernels/reader_conv_activations_padded_with_halo_3x3_weights_v2.cpp
 )
 
 target_include_directories(ttnn_op_conv PRIVATE ${FixmeOpIncDirs})

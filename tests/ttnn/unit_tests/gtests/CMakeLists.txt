@@ -74,7 +74,6 @@ target_sources(
         test_add.cpp
         test_graph_add.cpp
         test_graph_basic.cpp
-        test_async_runtime.cpp
         test_matmul_benchmark.cpp
         test_multiprod_queue.cpp
         test_multi_cq_multi_dev.cpp
@@ -99,15 +98,15 @@ target_link_libraries(
         TT::NN::CPP
 )
 
-#[[
 add_library(unit_tests_ttnn_basic OBJECT)
 add_library(TT::NN::Test::Basic ALIAS unit_tests_ttnn_basic)
 TT_ENABLE_UNITY_BUILD(unit_tests_ttnn_basic)
 target_sources(
     unit_tests_ttnn_basic
     PRIVATE
-        test_conv2d.cpp
-        test_graph_query_op_runtime.cpp
+        test_async_runtime.cpp # FIXME: Fix memory leak then shift-left
+    # test_conv2d.cpp
+    # test_graph_query_op_runtime.cpp
 )
 target_include_directories(unit_tests_ttnn_basic PRIVATE ${PROJECT_SOURCE_DIR}/tests)
 target_link_libraries(
@@ -116,7 +115,6 @@ target_link_libraries(
         test_common_libs
         TT::NN::CPP
 )
-#]]
 
 add_executable(unit_tests_ttnn)
 set_target_properties(
