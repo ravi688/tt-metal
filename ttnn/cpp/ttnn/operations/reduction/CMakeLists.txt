@@ -2,6 +2,12 @@ add_library(ttnn_op_reduction ${LIB_TYPE})
 add_library(TT::NN::Ops::Reduction ALIAS ttnn_op_reduction)
 
 target_precompile_headers(ttnn_op_reduction REUSE_FROM TT::CommonPCH)
+set_target_properties(
+    ttnn_op_reduction
+    PROPERTIES
+        VERIFY_INTERFACE_HEADER_SETS
+            FALSE
+)
 
 target_sources(
     ttnn_op_reduction
