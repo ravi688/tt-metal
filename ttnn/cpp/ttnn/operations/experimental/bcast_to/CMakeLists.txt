@@ -28,6 +28,9 @@ target_sources(
             device/kernels/dataflow/writer_interleaved_row_bcast_to.cpp
             device/kernels/dataflow/writer_interleaved_scalar_bcast_to.cpp
             device/kernels/dataflow/writer_interleaved_no_bcast_to.cpp
+            device/kernels/dataflow/reader_interleaved_row_bcast_to.cpp
+            device/kernels/dataflow/reader_interleaved_scalar_bcast_to.cpp
+            device/kernels/dataflow/reader_interleaved_no_bcast_to.cpp
 )
 
 target_include_directories(ttnn_op_experimental_bcast_to PRIVATE ${FixmeOpIncDirs})

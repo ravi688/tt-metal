@@ -151,6 +151,7 @@ target_sources(
             include/compute_kernel_api/eltwise_unary/relu.h
             include/compute_kernel_api/eltwise_unary/sfpu_split_includes.h
             include/compute_kernel_api/eltwise_unary/sqrt.h
+            include/compute_kernel_api/mask.h
             include/compute_kernel_api/matmul.h
             include/compute_kernel_api/pack.h
             include/compute_kernel_api/reconfig_data_format.h
