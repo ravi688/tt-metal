@@ -6,7 +6,10 @@ target_sources(
         FILE_SET kernels
         TYPE HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
-        FILES tt_dnn/kernels/compute/moreh_common.hpp tt_dnn/kernels/dataflow/moreh_common.hpp
+        FILES
+            tt_dnn/kernels/compute/moreh_common.hpp
+            tt_dnn/kernels/dataflow/moreh_common.hpp
+            tt_dnn/kernels/dataflow/generate_mm_scaler.hpp
 )
 
 install(

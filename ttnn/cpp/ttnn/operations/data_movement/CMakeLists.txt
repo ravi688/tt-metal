@@ -116,6 +116,7 @@ target_sources(
             permute/device/kernels/compute/transpose_xw_rm_single_tile_size.cpp
             permute/device/kernels/dataflow/writer_permute_interleaved_rm_row_invariant.cpp
             permute/device/kernels/dataflow/reader_permute_interleaved_rm_row_invariant.cpp
+            permute/device/kernels/dataflow/writer_permute_interleaved_rm_blocked_generic.cpp
             common/kernels/common.hpp
 )
 
