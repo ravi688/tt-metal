@@ -122,6 +122,7 @@ target_sources(
             api/tt-metalium/fabric_edm_packet_header.hpp
             core_descriptors/blackhole_140_arch.yaml
             core_descriptors/wormhole_b0_80_arch.yaml
+            core_descriptors/wormhole_b0_80_arch_eth_dispatch.yaml
             fabric/mesh_graph_descriptors/n150_mesh_graph_descriptor.yaml
             fabric/mesh_graph_descriptors/n300_mesh_graph_descriptor.yaml
             fabric/mesh_graph_descriptors/p100_mesh_graph_descriptor.yaml
