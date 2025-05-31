@@ -494,6 +494,7 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.23)
                 inc/debug/dprint.h
                 inc/debug/dprint_buffer.h
                 inc/debug/dprint_tile.h
+                inc/debug/dprint_pages.h
                 inc/debug/fw_debug.h
                 inc/debug/noc_logging.h
                 inc/debug/ring_buffer.h

@@ -12,7 +12,6 @@ target_sources(
         sliding_window.cpp
 )
 
-# #[[
 target_sources(
     ttnn_op_sliding_window
     PUBLIC
@@ -21,7 +20,6 @@ target_sources(
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
         FILES halo/device/kernels/dataflow/halo_gather.cpp
 )
-#]]
 
 target_include_directories(ttnn_op_sliding_window PRIVATE ${FixmeOpIncDirs})
 target_link_libraries(
