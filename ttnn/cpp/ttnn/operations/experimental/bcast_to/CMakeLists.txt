@@ -2,6 +2,12 @@ add_library(ttnn_op_experimental_bcast_to ${LIB_TYPE})
 add_library(TT::NN::Ops::Experimental::BcastTo ALIAS ttnn_op_experimental_bcast_to)
 
 target_precompile_headers(ttnn_op_experimental_bcast_to REUSE_FROM TT::CommonPCH)
+set_target_properties(
+    ttnn_op_experimental_bcast_to
+    PROPERTIES
+        VERIFY_INTERFACE_HEADER_SETS
+            FALSE
+)
 
 target_sources(
     ttnn_op_experimental_bcast_to

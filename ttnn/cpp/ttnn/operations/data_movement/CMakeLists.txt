@@ -2,6 +2,12 @@ add_library(ttnn_op_data_movement ${LIB_TYPE})
 add_library(TT::NN::Ops::DataMovement ALIAS ttnn_op_data_movement)
 
 target_precompile_headers(ttnn_op_data_movement REUSE_FROM TT::CommonPCH)
+set_target_properties(
+    ttnn_op_data_movement
+    PROPERTIES
+        VERIFY_INTERFACE_HEADER_SETS
+            FALSE
+)
 
 target_sources(
     ttnn_op_data_movement
