@@ -88,6 +88,8 @@ target_sources(
         test_sliding_window_infra.cpp
         common_test_utils.cpp
         test_generic_op.cpp
+        test_conv2d.cpp
+        test_graph_query_op_runtime.cpp
 )
 target_include_directories(unit_tests_ttnn_smoke PRIVATE ${PROJECT_SOURCE_DIR}/tests)
 target_link_libraries(

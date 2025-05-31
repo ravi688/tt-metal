@@ -18,6 +18,14 @@ target_sources(
         device/broadcast_height_multi_core_sharded_optimized_program_factory.cpp
         device/broadcast_height_multi_core_sharded_program_factory.cpp
 )
+target_sources(
+    ttnn_op_eltwise_binary
+    PUBLIC
+        FILE_SET kernels
+        TYPE HEADERS
+        BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
+        FILES device/kernels/compute/bcast_hw.cpp
+)
 
 target_include_directories(ttnn_op_eltwise_binary PRIVATE ${FixmeOpIncDirs})
 target_link_libraries(
@@ -25,6 +33,15 @@ target_link_libraries(
     PRIVATE
         TT::Metalium
         TT::NN::Core
+)
+
+install(
+    TARGETS
+        ttnn_op_eltwise_binary
+    FILE_SET
+    kernels
+        DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}/tt-metalium/ttnn/cpp/ttnn/operations/eltwise/binary
+        COMPONENT ttnn-runtime
 )
 
 install(TARGETS ttnn_op_eltwise_binary LIBRARY COMPONENT tar)
