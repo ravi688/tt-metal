@@ -227,6 +227,8 @@ def test_accuracy_sdxl(
         for row in reader:
             prompts.append(row[2])
 
+    print(f"Start inference from prompt index: {start_from} to {start_from + 1000}")
+
     images = test_demo(
         device,
         use_program_cache,
