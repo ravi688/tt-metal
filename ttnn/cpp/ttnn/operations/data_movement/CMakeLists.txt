@@ -118,6 +118,7 @@ target_sources(
             permute/device/kernels/dataflow/reader_permute_interleaved_rm_row_invariant.cpp
             permute/device/kernels/dataflow/writer_permute_interleaved_rm_blocked_generic.cpp
             permute/device/kernels/dataflow/reader_permute_interleaved_rm_blocked_generic.cpp
+            sharded/device/kernels/dataflow/writer_unary_sharded.cpp
             common/kernels/common.hpp
 )
 
