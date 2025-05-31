@@ -24,7 +24,9 @@ target_sources(
         FILE_SET kernels
         TYPE HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
-        FILES device/kernels/compute/bcast_hw.cpp
+        FILES
+            device/kernels/compute/bcast_hw.cpp
+            device/kernels/dataflow/reader_bcast_scalar_interleaved_partitioned.cpp
 )
 
 target_include_directories(ttnn_op_eltwise_binary PRIVATE ${FixmeOpIncDirs})
