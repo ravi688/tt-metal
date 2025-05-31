@@ -120,6 +120,7 @@ target_sources(
             permute/device/kernels/dataflow/reader_permute_interleaved_rm_blocked_generic.cpp
             sharded/device/kernels/dataflow/writer_unary_sharded.cpp
             sharded/device/kernels/dataflow/reader_unary_stick_layout_sharded_blocks_interleaved_start_id.cpp
+            move/device/kernels/dataflow/reader_unary_local_l1_copy_backwards.cpp
             common/kernels/common.hpp
 )
 
