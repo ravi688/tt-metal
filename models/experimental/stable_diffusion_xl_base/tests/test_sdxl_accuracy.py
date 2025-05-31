@@ -201,6 +201,7 @@ class ImagesDataset(torch.utils.data.Dataset):
 )
 @pytest.mark.parametrize("captions_path", ["models/experimental/stable_diffusion_xl_base/coco2014/captions.tsv"])
 @pytest.mark.parametrize("coco_statistics_path", ["models/experimental/stable_diffusion_xl_base/coco2014/val2014.npz"])
+@pytest.mark.parametrize("start_from", [0, 1000, 2000, 3000, 4000])
 def test_accuracy_sdxl(
     device,
     use_program_cache,
@@ -210,6 +211,7 @@ def test_accuracy_sdxl(
     vae_on_device,
     captions_path,
     coco_statistics_path,
+    start_from,
 ):
     prompts = []
 
@@ -229,7 +231,7 @@ def test_accuracy_sdxl(
         device,
         use_program_cache,
         is_ci_env,
-        prompts[:100],
+        prompts[start_from : start_from + 1000],
         num_inference_steps,
         classifier_free_guidance,
         vae_on_device,
