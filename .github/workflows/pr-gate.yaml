@@ -33,6 +33,7 @@ on:
   push:
     branches:
       - main # Builds on main will populate the shared ccache to speed up builds on branches
+      - afuller/ttnn-package # FIXME: revert me
 
 concurrency:
   # Use github.run_id on main branch (or any protected branch)
