@@ -34,6 +34,7 @@ target_sources(
             conv2d/device/kernels/reader_conv_activations_padded_with_halo_3x3_weights_v2.cpp
             conv2d/device/kernels/height_sharded_reader_common.hpp
             conv2d/device/kernels/reader_writer_tiled_out_1d_mcast_receiver_conv_weights_tiled_col_to_rm_blocks.cpp
+            conv2d/device/kernels/reader_writer_tiled_out_1d_mcast_sender_conv_weights_tiled_col_to_rm_blocks.cpp
 )
 
 target_include_directories(ttnn_op_conv PRIVATE ${FixmeOpIncDirs})
