@@ -130,6 +130,7 @@ target_sources(
             sharded/device/kernels/dataflow/writer_unary_sharded_blocks_interleaved_start_id.cpp
             reshape_view/device/device/dataflow/writer_reshape_tiled.cpp
             reshape_view/device/hostdevcommon/common.hpp
+            permute/device/kernels/dataflow/writer_permute_interleaved_tiled_row_invariant.cpp
             common/kernels/common.hpp
 )
 
