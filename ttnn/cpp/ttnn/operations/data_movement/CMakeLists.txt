@@ -131,6 +131,8 @@ target_sources(
             reshape_view/device/device/dataflow/writer_reshape_tiled.cpp
             reshape_view/device/hostdevcommon/common.hpp
             permute/device/kernels/dataflow/writer_permute_interleaved_tiled_row_invariant.cpp
+            reshape_view/device/device/dataflow/reader_reshape_tiled.cpp
+            transpose/device/kernels/compute/transpose_wh.cpp
             common/kernels/common.hpp
 )
 
