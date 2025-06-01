@@ -129,6 +129,7 @@ target_sources(
             move/device/kernels/dataflow/reader_unary_local_l1_copy_backwards.cpp
             sharded/device/kernels/dataflow/writer_unary_sharded_blocks_interleaved_start_id.cpp
             reshape_view/device/device/dataflow/writer_reshape_tiled.cpp
+            reshape_view/device/hostdevcommon/common.hpp
             common/kernels/common.hpp
 )
 
