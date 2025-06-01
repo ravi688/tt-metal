@@ -133,6 +133,7 @@ target_sources(
             permute/device/kernels/dataflow/writer_permute_interleaved_tiled_row_invariant.cpp
             reshape_view/device/device/dataflow/reader_reshape_tiled.cpp
             transpose/device/kernels/compute/transpose_wh.cpp
+            transpose/device/kernels/dataflow/reader_unary_transpose_hc_interleaved_tiled_padding_aware.cpp
             common/kernels/common.hpp
 )
 
