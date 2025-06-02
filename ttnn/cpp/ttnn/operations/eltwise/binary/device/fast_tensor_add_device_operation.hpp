@@ -15,7 +15,7 @@
 
 namespace ttnn::operations::binary {
 
-struct FastTensorAddOperation {
+struct FastTensorAddDeviceOperation {
     // Define the operation attributes. This is it to store all variables needed by operations that aren't tensors
     struct operation_attributes_t {
         bool attribute;
@@ -153,5 +153,5 @@ struct FastTensorAddOperation {
 // Register the operation with the ttnn::register_operation API to make it available to the user as ttnn::prim::example
 namespace ttnn::prim {
 constexpr auto fast_tensor_add =
-    ttnn::register_operation<"ttnn::prim::fast_tensor_add", ttnn::operations::binary::FastTensorAddOperation>();
+    ttnn::register_operation<"ttnn::prim::fast_tensor_add", ttnn::operations::binary::FastTensorAddDeviceOperation>();
 }  // namespace ttnn::prim
