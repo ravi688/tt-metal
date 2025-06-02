@@ -13,22 +13,22 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     using namespace tt;
     using namespace tt::tt_metal;
 
-    const auto& input_tensor = tensor_args.input_tensor;
+    const auto& input_tensor_a = tensor_args.input_tensor_a;
     auto& output_tensor = tensor_return_value;
 
-    auto src_buffer = input_tensor.buffer();
+    auto src_buffer = input_tensor_a.buffer();
     auto dst_buffer = output_tensor.buffer();
 
     tt::tt_metal::Program program{};
 
-    tt::DataFormat cb_data_format = tt::tt_metal::datatype_to_dataformat_converter(input_tensor.get_dtype());
+    tt::DataFormat cb_data_format = tt::tt_metal::datatype_to_dataformat_converter(input_tensor_a.get_dtype());
     uint32_t single_tile_size = tt::tt_metal::detail::TileSize(cb_data_format);
     tt::DataFormat cb_data_format_output = tt::tt_metal::datatype_to_dataformat_converter(output_tensor.get_dtype());
     uint32_t single_tile_size_output = tt::tt_metal::detail::TileSize(cb_data_format_output);
 
-    uint32_t num_tiles = input_tensor.volume() / tt::constants::TILE_HW;
+    uint32_t num_tiles = input_tensor_a.volume() / tt::constants::TILE_HW;
 
-    tt::tt_metal::IDevice* device = input_tensor.device();
+    tt::tt_metal::IDevice* device = input_tensor_a.device();
 
     CoreCoord compute_with_storage_grid_size = {1, 1};
     uint32_t num_cores_x = compute_with_storage_grid_size.x;
@@ -132,10 +132,10 @@ void FastTensorAddDeviceOperation::SingleCore::override_runtime_arguments(
     auto& unary_reader_kernel_id = cached_program.shared_variables.unary_reader_kernel_id;
     auto& unary_writer_kernel_id = cached_program.shared_variables.unary_writer_kernel_id;
 
-    const auto& input_tensor = tensor_args.input_tensor;
+    const auto& input_tensor_a = tensor_args.input_tensor_a;
     auto& output_tensor = tensor_return_value;
 
-    auto src_buffer = input_tensor.buffer();
+    auto src_buffer = input_tensor_a.buffer();
     auto dst_buffer = output_tensor.buffer();
 
     {

@@ -27,7 +27,8 @@ struct FastTensorAddDeviceOperation {
     // tensors, etc.
     struct tensor_args_t {
         // This example will use a tensor that can only be used as an input
-        const Tensor& input_tensor;
+        const Tensor& input_tensor_a;
+        const Tensor& input_tensor_b;
 
         // However, the following examples show what else can be done with tensor_args_t
 
@@ -130,7 +131,7 @@ struct FastTensorAddDeviceOperation {
     // ttnn::prim::example(input_tensor)` after the op is registered Keep in mind that the the overload with `queue_id`
     // argument will be added automatically for primitive operations So, the user can also call this operation using
     // `tensor_return_value_t output = ttnn::prim::example(queue_id, input_tensor)`
-    static std::tuple<operation_attributes_t, tensor_args_t> invoke(const Tensor& input_tensor);
+    static std::tuple<operation_attributes_t, tensor_args_t> invoke(const Tensor& input_tensor_a, const Tensor& input_tensor_b);
 
     // Optional methods
 
