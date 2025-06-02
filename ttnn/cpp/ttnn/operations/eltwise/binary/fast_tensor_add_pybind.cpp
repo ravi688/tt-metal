@@ -6,8 +6,7 @@
 
 #include "pybind11/decorators.hpp"
 #include "pybind11/export_enum.hpp"
-#include "ttnn/operations/eltwise/binary/binary.hpp"
-#include "ttnn/operations/eltwise/binary/binary_composite.hpp"
+#include "ttnn/operations/eltwise/binary/device/fast_tensor_add_device_operation.hpp"
 #include "ttnn/types.hpp"
 
 namespace ttnn {
@@ -42,6 +41,8 @@ void bind_primitive_fast_tensor_add_operation(py::module& module, const ttnn::pr
             },
             py::arg("input_tensor_a"),
             py::arg("input_tensor_b")});
+}
+
 }
 
 void py_module(py::module& module) {
