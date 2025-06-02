@@ -16,6 +16,11 @@ from ttnn.model_preprocessing import preprocess_model_parameters
 from models.experimental.sentence_bert.ttnn.common import custom_preprocessor, preprocess_inputs
 
 
+def mean_pooling(token_embeddings, attention_mask):
+    input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
+    return torch.sum(token_embeddings * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)
+
+
 @run_for_wormhole_b0()
 @pytest.mark.parametrize(
     "device_params", [{"l1_small_size": 24576, "trace_region_size": 6434816, "num_command_queues": 2}], indirect=True
@@ -63,6 +68,8 @@ def test_run_sentence_bert_trace_2cqs_inference(
     for iter in range(0, inference_iter_count):
         t0 = time.time()
         output = sentence_bert_trace_2cq.execute_sentence_bert_trace_2cqs_inference(ttnn_input_ids)
+        output_torch = ttnn.to_torch(output).squeeze(dim=1)
+        processed_output = mean_pooling(output_torch, attention_mask)
         t1 = time.time()
         inference_time_iter.append(t1 - t0)
     sentence_bert_trace_2cq.release_sentence_bert_trace_2cqs_inference()
