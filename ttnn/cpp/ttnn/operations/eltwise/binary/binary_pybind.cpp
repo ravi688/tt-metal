@@ -1745,10 +1745,38 @@ void bind_power(py::module& module, const binary_operation_t& operation, const s
             py::arg("queue_id") = ttnn::DefaultQueueId});
 }
 
+void bind_primitive_fast_tensor_add_operation(py::module& module, const ttnn::prim::fast_tensor_add& operation, const std::string& description) {
+    auto doc = std::string {
+        R"doc(
+        Fast Tensor Addition (Primitive)
+
+        Args:
+            * :attr:`input_tensor_a` (ttnn.Tensor)
+            * :attr:`input_tensor_b` (ttnn.Tensor): the tensor add to :attr:`input_tensor_a`.
+
+        Example:
+
+            >>> tensor1 = ttnn.to_device(ttnn.from_torch(torch.tensor(([[1, 2], [3, 4]]), dtype=torch.bfloat16)), device)
+            >>> tensor2 = ttnn.to_device(ttnn.from_torch(torch.tensor(([[1, 2], [3, 4]]), dtype=torch.bfloat16)), device)
+            >>> output = ttnn.fast_tensor_add(tensor1, tensor2)
+        )doc" };
+
+    bind_registered_operation(
+        module,
+        operation,
+        doc,
+        ttnn::pybind_overload_t{
+            [](const ttnn::prim::fast_tensor_add& self, const ttnn::Tensor& input_tensor_a, const ttnn::Tensor& input_tensor_b) -> ttnn::Tensor {
+                return self(input_tensor_a, input_tensor_b);
+            },
+            py::arg("input_tensor_a"),
+            py::arg("input_tensor_b")});
+}
+
 void bind_fast_tensor_add_operation(py::module& module, const ttnn::fast_tensor_add& operation, const std::string& description) {
     auto doc = std::string {
         R"doc(
-        Fast Tensor Addition
+        Fast Tensor Addition (Composite)
 
         Args:
             * :attr:`input_tensor_a` (ttnn.Tensor)
@@ -1987,6 +2015,11 @@ void py_module(py::module& module) {
         R"doc(INT32)doc");
 
     auto prim_module = module.def_submodule("prim", "Primitive binary operations");
+
+    detail::bind_primitive_fast_tensor_add_operation(
+        prim_module,
+        ttnn::prim::fast_tensor_add,
+        R"doc(Applied binary operation on :attr:`input_tensor_a` to :attr:`input_tensor_b` and returns the tensor with the same layout as :attr:`input_tensor_a`)doc");
 
     detail::bind_primitive_binary_operation(
         prim_module,
