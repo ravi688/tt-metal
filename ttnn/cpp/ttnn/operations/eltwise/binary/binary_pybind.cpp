@@ -1809,10 +1809,7 @@ void py_module(py::module& module) {
     detail::bind_fast_tensor_add_operation(
         module,
         ttnn::fast_tensor_add,
-        R"doc(Adds :attr:`input_tensor_a` to :attr:`input_tensor_b` and returns the tensor with the same layout as :attr:`input_tensor_a`)doc",
-        R"doc(\mathrm{{output\_tensor}}_i = \mathrm{{input\_tensor\_a}}_i + \mathrm{{input\_tensor\_b}}_i)doc",
-        R"doc(: :code:`'None'` | :code:`'relu'`. )doc",
-        R"doc(BFLOAT16, BFLOAT8_B, INT32)doc");
+        R"doc(Adds :attr:`input_tensor_a` to :attr:`input_tensor_b` and returns the tensor with the same layout as :attr:`input_tensor_a`)doc");
 
     detail::bind_binary_operation(
         module,
