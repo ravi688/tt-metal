@@ -1745,7 +1745,7 @@ void bind_power(py::module& module, const binary_operation_t& operation, const s
             py::arg("queue_id") = ttnn::DefaultQueueId});
 }
 
-void bind_primitive_fast_tensor_add_operation(py::module& module, const ttnn::prim::fast_tensor_add& operation, const std::string& description) {
+void bind_primitive_fast_tensor_add_operation(py::module& module, const decltype(ttnn::prim::fast_tensor_add)& operation, const std::string& description) {
     auto doc = std::string {
         R"doc(
         Fast Tensor Addition (Primitive)
@@ -1766,14 +1766,14 @@ void bind_primitive_fast_tensor_add_operation(py::module& module, const ttnn::pr
         operation,
         doc,
         ttnn::pybind_overload_t{
-            [](const ttnn::prim::fast_tensor_add& self, const ttnn::Tensor& input_tensor_a, const ttnn::Tensor& input_tensor_b) -> ttnn::Tensor {
+            [](const decltype(ttnn::prim::fast_tensor_add)& self, const ttnn::Tensor& input_tensor_a, const ttnn::Tensor& input_tensor_b) -> ttnn::Tensor {
                 return self(input_tensor_a, input_tensor_b);
             },
             py::arg("input_tensor_a"),
             py::arg("input_tensor_b")});
 }
 
-void bind_fast_tensor_add_operation(py::module& module, const ttnn::fast_tensor_add& operation, const std::string& description) {
+void bind_fast_tensor_add_operation(py::module& module, const decltype(ttnn::fast_tensor_add)& operation, const std::string& description) {
     auto doc = std::string {
         R"doc(
         Fast Tensor Addition (Composite)
@@ -1794,7 +1794,7 @@ void bind_fast_tensor_add_operation(py::module& module, const ttnn::fast_tensor_
         operation,
         doc,
         ttnn::pybind_overload_t{
-            [](const ttnn::fast_tensor_add& self, const ttnn::Tensor& input_tensor_a, const ttnn::Tensor& input_tensor_b) -> ttnn::Tensor {
+            [](const decltype(ttnn::fast_tensor_add)& self, const ttnn::Tensor& input_tensor_a, const ttnn::Tensor& input_tensor_b) -> ttnn::Tensor {
                 return self(input_tensor_a, input_tensor_b);
             },
             py::arg("input_tensor_a"),
