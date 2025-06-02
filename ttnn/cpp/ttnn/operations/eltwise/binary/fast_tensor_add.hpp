@@ -15,7 +15,7 @@ struct FastTensorAddOperation {
     // The user will be able to call this method as `Tensor output = ttnn::composite_example(input_tensor)` after the op
     // is registered
     static Tensor invoke(const Tensor& input_tensor_a, const Tensor& input_tensor_b) {
-        auto result = prim::example(input_tensor_a, input_tensor_b);
+        auto result = prim::fast_tensor_add(input_tensor_a, input_tensor_b);
         return result;
     }
 };
