@@ -16,7 +16,7 @@ FastTensorAddDeviceOperation::program_factory_t FastTensorAddDeviceOperation::se
 }
 
 // Input arguments validation
-static void validate(const operation_attributes_t& attributes, const tensor_args_t& tensor_args)
+void FastTensorAddDeviceOperation::validate(const operation_attributes_t& attributes, const tensor_args_t& tensor_args)
 {
     // TODO: The shape of the tensors must be identical
     // For now let's skip the validation.
