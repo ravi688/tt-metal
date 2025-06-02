@@ -7,7 +7,7 @@
 #include "pybind11/decorators.hpp"
 #include "pybind11/export_enum.hpp"
 #include "ttnn/operations/eltwise/binary/binary.hpp"
-#include "ttnn/operations/eltwise/device/fast_tensor_add_device_operation.hpp"
+#include "ttnn/operations/eltwise/binary/device/fast_tensor_add_device_operation.hpp"
 #include "ttnn/operations/eltwise/binary/binary_composite.hpp"
 #include "ttnn/types.hpp"
 
