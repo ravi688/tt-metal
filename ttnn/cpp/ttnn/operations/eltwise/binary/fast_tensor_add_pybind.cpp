@@ -16,7 +16,7 @@ namespace binary {
 
 namespace detail {
 
-void bind_primitive_binary_operation(py::module& module, const ttnn::prim::fast_tensor_add& operation, const std::string& description) {
+void bind_primitive_fast_tensor_add_operation(py::module& module, const ttnn::prim::fast_tensor_add& operation, const std::string& description) {
     auto doc = std::string {
         R"doc(
         Fast Tensor Addition
@@ -44,7 +44,18 @@ void bind_primitive_binary_operation(py::module& module, const ttnn::prim::fast_
             py::arg("input_tensor_b")});
 }
 
+void py_module(py::module& module) {
+
+    detail::bind_primitive_fast_tensor_add_operation(
+        module,
+        ttnn::fast_tensor_add,
+        R"doc(Adds :attr:`input_tensor_a` to :attr:`input_tensor_b` and returns the tensor with the same layout as :attr:`input_tensor_a`)doc",
+        R"doc(\mathrm{{output\_tensor}}_i = \mathrm{{input\_tensor\_a}}_i + \mathrm{{input\_tensor\_b}}_i)doc",
+        R"doc(: :code:`'None'` | :code:`'relu'`. )doc",
+        R"doc(BFLOAT16, BFLOAT8_B, INT32)doc");
+
 }
+
 }  // namespace binary
 }  // namespace operations
 }  // namespace ttnn
