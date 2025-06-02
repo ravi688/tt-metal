@@ -2,7 +2,7 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#include "example_device_operation.hpp"
+#include "fast_tensor_add_device_operation.hpp"
 
 namespace ttnn::operations::binary {
 
