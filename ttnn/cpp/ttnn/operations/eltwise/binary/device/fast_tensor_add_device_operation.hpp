@@ -153,8 +153,8 @@ struct FastTensorAddDeviceOperation {
 
 }  // namespace ttnn::operations::examples
 
-// Register the operation with the ttnn::register_operation API to make it available to the user as ttnn::fast_tensor_add
-namespace ttnn {
+// Register the operation with the ttnn::register_operation API to make it available to the user as ttnn::prim::example
+namespace ttnn::prim {
 constexpr auto fast_tensor_add =
-    ttnn::register_operation<"ttnn::fast_tensor_add", ttnn::operations::binary::FastTensorAddDeviceOperation>();
-}  // namespace ttnn
+    ttnn::register_operation<"ttnn::prim::fast_tensor_add", ttnn::operations::binary::FastTensorAddDeviceOperation>();
+}  // namespace ttnn::prim
