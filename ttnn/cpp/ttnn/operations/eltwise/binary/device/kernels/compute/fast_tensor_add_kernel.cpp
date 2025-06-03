@@ -1,15 +1,18 @@
-// SPDX-FileCopyrightText: © 2023 Tenstorrent Inc.
+// SPDX-FileCopyrightText: © 2024 Tenstorrent Inc.
 //
 // SPDX-License-Identifier: Apache-2.0
 
-#include <cstdint>
+void kernel_main() {
+    uint32_t src0_addr = get_compile_time_arg_val<uint32_t>(0);
+    uint32_t src1_addr = get_compile_time_arg_val<uint32_t>(1);
+    uint32_t dst_addr = get_compile_time_arg_val<uint32_t>(2);
 
-#include "compute_kernel_api.h"
+    volatile uint32_t* src0_ptr = (uint32_t*)(src0_addr);
+    volatile uint32_t* src1_ptr = (uint32_t*)(src1_addr);
 
-namespace NAMESPACE {
-void MAIN
-{
+    volatile uint32_t* dst_ptr = (uint32_t*)(dst_addr);
 
+    uint32_t num_elements = get_compile_time_arg_val<uint32_t>(3);
+    for(uint32_t i = 0; i < num_elements; i++)
+    	dst_ptr[i] = src0_ptr[i] + src1_ptr[i];
 }
-
-}  // namespace NAMESPACE
