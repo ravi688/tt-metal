@@ -53,10 +53,6 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
                                                         core, std::move(compute_kernel_config));
 
   
-
-    tt::tt_metal::SetRuntimeArgs(
-        program, unary_reader_kernel_id, core, {src_buffer->address(), num_tiles_per_core, num_tiles_written});
-
     return { std::move(program), { .compute_kernel_id = compute_kernel_handle }};
 }
 
@@ -65,22 +61,22 @@ void FastTensorAddDeviceOperation::SingleCore::override_runtime_arguments(
     const operation_attributes_t& operation_attributes,
     const tensor_args_t& tensor_args,
     tensor_return_value_t& tensor_return_value) {
-    auto& program = cached_program.program;
-    auto& compute_kernel_id = cached_program.shared_variables.compute_kernel_id;
+    // auto& program = cached_program.program;
+    // auto& compute_kernel_id = cached_program.shared_variables.compute_kernel_id;
 
-    const auto& input_tensor_a = tensor_args.input_tensor_a;
-    const auto& input_tensor_b = tensor_args.input_tensor_b;
-    auto& output_tensor = tensor_return_value;
+    // const auto& input_tensor_a = tensor_args.input_tensor_a;
+    // const auto& input_tensor_b = tensor_args.input_tensor_b;
+    // auto& output_tensor = tensor_return_value;
 
-    auto src1_buffer = input_tensor_a.buffer();
-    auto src2_buffer = input_tensor_b.buffer();
-    auto dst_buffer = output_tensor.buffer();
+    // auto src1_buffer = input_tensor_a.buffer();
+    // auto src2_buffer = input_tensor_b.buffer();
+    // auto dst_buffer = output_tensor.buffer();
     
-    auto& runtime_args = tt::tt_metal::GetRuntimeArgs(program, compute_kernel_id, CoreCoord{0, 0});
-    runtime_args[0] = src1_buffer->address();
-    runtime_args[1] = src2_buffer->address();
-    runtime_args[2] = dst_buffer->address();
-    runtime_args[3] = input_tensor_a.volume();
+    // auto& runtime_args = tt::tt_metal::GetRuntimeArgs(program, compute_kernel_id, CoreCoord{0, 0});
+    // runtime_args[0] = src1_buffer->address();
+    // runtime_args[1] = src2_buffer->address();
+    // runtime_args[2] = dst_buffer->address();
+    // runtime_args[3] = input_tensor_a.volume();
 }
 
 }  // namespace ttnn::operations::binary
