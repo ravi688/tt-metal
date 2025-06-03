@@ -49,7 +49,7 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     constexpr CoreCoord core = { 0, 0 };
     // Create Compute kernel (Loads the two tiles from L1 and computes addition and writes back to L1)
     tt::tt_metal::KernelHandle compute_kernel_handle = tt::tt_metal::CreateKernel(program,
-                                                        "ttnn/cpp/ttnn/operations/eltwise/binary/device/kernels/fast_tensor_add_kernel.cpp",
+                                                        "ttnn/cpp/ttnn/operations/eltwise/binary/device/kernels/compute/fast_tensor_add_kernel.cpp",
                                                         core, std::move(compute_kernel_config));
 
   
