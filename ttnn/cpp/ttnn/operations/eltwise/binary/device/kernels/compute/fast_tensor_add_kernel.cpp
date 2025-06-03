@@ -2,6 +2,8 @@
 //
 // SPDX-License-Identifier: Apache-2.0
 
+#include "compute_kernel_api.h"
+
 void kernel_main() {
     uint32_t src0_addr = get_compile_time_arg_val<uint32_t>(0);
     uint32_t src1_addr = get_compile_time_arg_val<uint32_t>(1);
