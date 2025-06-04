@@ -34,7 +34,7 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
 
     uint32_t num_elements = input_tensor_a.get_logical_shape().volume();
 
-    printf("num_elements: %lu", num_elements);
+    printf("num_elements: %u", num_elements);
 
     std::vector<uint32_t> compute_kernel_compute_args = 
     {
