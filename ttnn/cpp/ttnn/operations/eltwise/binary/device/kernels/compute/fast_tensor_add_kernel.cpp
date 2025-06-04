@@ -10,7 +10,7 @@ using namespace std;
 
 namespace NAMESPACE
 {
-void MAIN() {
+void MAIN {
     uint32_t src0_addr = get_compile_time_arg_val(0);
     uint32_t src1_addr = get_compile_time_arg_val(1);
     uint32_t dst_addr = get_compile_time_arg_val(2);
