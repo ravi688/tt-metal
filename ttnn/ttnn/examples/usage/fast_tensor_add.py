@@ -44,5 +44,10 @@ fta_tensor_result = ttnn.fast_tensor_add(tensor_device_a, tensor_device_b)
 
 print('fta_tensor_result: ' + str(fta_tensor_result))
 
+if not fta_tensor_result == tensor_result_1:
+                print('FAILED')
+else:
+                print('PASSED')
+
 # Close the tt device which we have opened
 ttnn.close_device(tt_device)
