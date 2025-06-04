@@ -32,7 +32,9 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     // Create a program
     tt::tt_metal::Program program = tt::tt_metal::CreateProgram();
 
-    uint32_t num_elements = input_tensor_a.volume();
+    uint32_t num_elements = input_tensor_a.get_logical_shape().volume();
+
+    printf("num_elements: %lu", num_elements);
 
     std::vector<uint32_t> compute_kernel_compute_args = 
     {
