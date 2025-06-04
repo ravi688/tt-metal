@@ -8,7 +8,9 @@
 
 using namespace std;
 
-void kernel_main() {
+namespace NAMESPACE
+{
+void MAIN() {
     uint32_t src0_addr = get_compile_time_arg_val(0);
     uint32_t src1_addr = get_compile_time_arg_val(1);
     uint32_t dst_addr = get_compile_time_arg_val(2);
@@ -21,4 +23,5 @@ void kernel_main() {
     uint32_t num_elements = get_compile_time_arg_val(3);
     for(uint32_t i = 0; i < num_elements; i++)
     	dst_ptr[i] = src0_ptr[i] + src1_ptr[i];
+}
 }
