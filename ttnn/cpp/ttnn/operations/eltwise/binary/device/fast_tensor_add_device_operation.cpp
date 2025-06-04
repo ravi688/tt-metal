@@ -37,10 +37,12 @@ void FastTensorAddDeviceOperation::validate_on_program_cache_hit(
 FastTensorAddDeviceOperation::spec_return_value_t FastTensorAddDeviceOperation::compute_output_specs(
     const operation_attributes_t&, const tensor_args_t& tensor_args) {
     const auto& input_tensor_a = tensor_args.input_tensor_a;
+    MemoryConfig memory_config { };
+    memory_config.buffer_type = BufferType::L1;
     return TensorSpec(
         input_tensor_a.get_logical_shape(),
         tt::tt_metal::TensorLayout(
-            input_tensor_a.get_dtype(), tt::tt_metal::PageConfig(input_tensor_a.get_layout()), MemoryConfig{}));
+            input_tensor_a.get_dtype(), tt::tt_metal::PageConfig(input_tensor_a.get_layout()), memory_config));
 }
 
 FastTensorAddDeviceOperation::tensor_return_value_t FastTensorAddDeviceOperation::create_output_tensors(
