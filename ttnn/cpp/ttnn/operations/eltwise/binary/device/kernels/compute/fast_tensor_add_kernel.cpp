@@ -4,6 +4,7 @@
 
 #include <cstdint>
 #include "compile_time_args.h"
+#include "compute_kernel_api.h"
 
 using namespace std;
 
