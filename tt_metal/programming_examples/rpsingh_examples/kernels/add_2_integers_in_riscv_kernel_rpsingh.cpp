@@ -9,7 +9,7 @@ using namespace std;
 namespace NAMESPACE
 {
 
-int MAIN()
+int MAIN
 {
 	uint32_t num_elements = get_compile_time_arg_val(0)
 	uint32_t partition0_base_addr = get_compile_time_arg_val(1);
