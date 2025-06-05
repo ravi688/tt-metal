@@ -42,10 +42,10 @@ static std::vector<uint32_t> add_uint32_vector(const std::vector<uint32_t>& inpu
 	
 	auto partition0_base_addr = l1_unreserved_base;
 	// Write the first input vector to the first partition #0
-	tt::tt_metal::detail::WriteToDeviceL1(device, single_core, partition0_base_addr, input0);
+	tt::tt_metal::detail::WriteToDeviceL1(device, single_core, partition0_base_addr, const_cast<std::vector<uint32_t>&>(input0));
 	// Write the second input vector to the second partition #1
 	auto partition1_base_addr = partition0_base_addr + sizeof(uint32_t) * input0.size();
-	tt::tt_metal::detail::WriteToDeviceL1(device, single_core, partition1_base_addr, input1);
+	tt::tt_metal::detail::WriteToDeviceL1(device, single_core, partition1_base_addr, const_cast<std::vector<uint32_t>&>(input1));
 
 	// Create Program
 	tt::tt_metal::Program program = tt::tt_metal::CreateProgram();
