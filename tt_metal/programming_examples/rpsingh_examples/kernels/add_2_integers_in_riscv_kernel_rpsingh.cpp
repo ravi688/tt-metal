@@ -11,7 +11,7 @@ namespace NAMESPACE
 
 int MAIN
 {
-	uint32_t num_elements = get_compile_time_arg_val(0)
+	uint32_t num_elements = get_compile_time_arg_val(0);
 	uint32_t partition0_base_addr = get_compile_time_arg_val(1);
 	uint32_t partition1_base_addr = get_compile_time_arg_val(2);
 	uint32_t partition2_base_addr = get_compile_time_arg_val(3);
