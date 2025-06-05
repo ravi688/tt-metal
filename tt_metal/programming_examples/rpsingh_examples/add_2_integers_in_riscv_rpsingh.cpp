@@ -1,4 +1,6 @@
 #include <tt-metalium/host_api.hpp>
+#include <tt-metalium/device.hpp>
+#include <tt-metalium/tt-metal.hpp>
 
 #include <ostream>
 #include <vector>
@@ -32,17 +34,17 @@ static std::vector<uint32_t> add_uint32_vector(const std::vector<uint32_t>& inpu
 	tt::tt_metal::IDevice* device = tt::tt_metal::CreateDevice(device_id);
 
 	// Create the base address in L1
-	uint32_t l1_unreserved_base = device->allocator()->get_base_allocator_addr(HalMemType::L1);
+	uint32_t l1_unreserved_base = device->allocator()->get_base_allocator_addr(tt::tt_metal::HalMemType::L1);
 
 	// Just a single core will perform the computation (addition)
 	CoreCoord single_core { 0, 0 };
 	
 	auto partition0_base_addr = l1_unreserved_base;
 	// Write the first input vector to the first partition #0
-	tt_metal::detail::WriteToDeviceL1(device, single_core, partition0_base_addr, input0);
+	tt::tt_metal::detail::WriteToDeviceL1(device, single_core, partition0_base_addr, input0);
 	// Write the second input vector to the second partition #1
 	auto partition1_base_addr = partition0_base_addr + sizeof(uint32_t) * input0.size();
-	tt_metal::detail::WriteToDeviceL1(device, single_core, partition1_base_addr, input1);
+	tt::tt_metal::detail::WriteToDeviceL1(device, single_core, partition1_base_addr, input1);
 
 	// Create Program
 	tt::tt_metal::Program program = tt::tt_metal::CreateProgram();
