@@ -65,10 +65,10 @@ static std::pair<std::vector<uint32_t>, float> add_uint32_vector(const std::vect
 	const std::string kernel_file_path = "tt_metal/programming_examples/rpsingh_examples/add_2_integers_in_riscv/kernels/add_2_integers_in_riscv_kernel.cpp";
 	[[maybe_unused]] tt::tt_metal::KernelHandle kernel_handle = tt::tt_metal::CreateKernel(program, kernel_file_path, single_core, compute_kernel_config);
 
-	std::chrono::steady_clock::time_point_t start = std::chrono::steady_clock::now();
+	std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
 	// Launch Program using Slow Dispatch (for fast dispatch we could have used CommandQueue and EnqueuPreogram())
 	tt::tt_metal::detail::LaunchProgram(device, program);
-	std::chrono::steady_clock::time_point_t end = std::chrono::steady_clock::now();
+	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 	float elapsed_time = std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(end - start).count();
 
 	// Readback output (from partition #2) to host
