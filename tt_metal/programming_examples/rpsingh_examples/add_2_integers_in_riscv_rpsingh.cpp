@@ -1,6 +1,7 @@
 #include <tt-metalium/host_api.hpp>
 #include <tt-metalium/device.hpp>
 #include <tt-metalium/tt_metal.hpp>
+#include <tt-metalium/allocator.hpp>
 
 #include <ostream>
 #include <vector>
@@ -82,8 +83,8 @@ int main()
 	std::vector<uint32_t> input_values0 = { 1, 2, 3, 4, 5, 6 };
 	std::vector<uint32_t> input_values1 = { 7, 8, 9, 10, 11, 12 };
 
-	std::cout << "input_values0: " << input_values << "\n";
-	std::cout << "input_values1: " << input_values << "\n";
+	std::cout << "input_values0: " << input_values0 << "\n";
+	std::cout << "input_values1: " << input_values1 << "\n";
 
 	std::vector<uint32_t> output_values = add_uint32_vector(input_values0, input_values1);
 
