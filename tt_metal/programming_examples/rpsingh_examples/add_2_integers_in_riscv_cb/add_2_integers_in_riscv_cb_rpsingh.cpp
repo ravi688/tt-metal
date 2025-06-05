@@ -66,8 +66,8 @@ static std::vector<uint32_t> add_uint32_vector(const std::vector<uint32_t>& inpu
 	const std::string kernel_file_path = "tt_metal/programming_examples/rpsingh_examples/add_2_integers_in_riscv_cb/kernels/compute_kernel.cpp";
 	[[maybe_unused]] tt::tt_metal::KernelHandle kernel_handle = tt::tt_metal::CreateKernel(program, kernel_file_path, single_core, compute_kernel_config);
 
-	// Launch Program using Slow Dispatch (for fast dispatch we could have used CommandQueue and EnqueuPreogram())
-	tt::tt_metal::EnqueueProgram(command_queue, program);
+	// Launch Program using Fast Dispatch
+	tt::tt_metal::EnqueueProgram(command_queue, program, false);
 	tt::tt_metal::Finish(command_queue);
 
 	// Readback output (from partition #2) to host
