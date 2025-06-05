@@ -60,7 +60,7 @@ static std::vector<uint32_t> add_uint32_vector(const std::vector<uint32_t>& inpu
 											partition1_base_addr,
 											partition2_base_addr
 										};
-	const std::string kernel_file_path = "tt_metal/programming_examples/rpsingh_examples/kernels/add_2_integers_in_riscv_kernel.cpp";
+	const std::string kernel_file_path = "tt_metal/programming_examples/rpsingh_examples/add_2_integers_in_riscv/kernels/add_2_integers_in_riscv_kernel.cpp";
 	[[maybe_unused]] tt::tt_metal::KernelHandle kernel_handle = tt::tt_metal::CreateKernel(program, kernel_file_path, single_core, compute_kernel_config);
 
 	// Launch Program using Slow Dispatch (for fast dispatch we could have used CommandQueue and EnqueuPreogram())
