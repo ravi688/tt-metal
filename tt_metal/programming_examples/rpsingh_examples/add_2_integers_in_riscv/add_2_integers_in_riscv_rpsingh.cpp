@@ -5,6 +5,8 @@
 
 #include <ostream>
 #include <vector>
+#include <utility>
+#include <chrono>
 
 
 template<typename T>
@@ -21,7 +23,7 @@ static std::ostream& operator <<(std::ostream& stream, const std::vector<T>& v) 
 	return stream;
 }
 
-static std::vector<uint32_t> add_uint32_vector(const std::vector<uint32_t>& input0, const std::vector<uint32_t>& input1) noexcept
+static std::pair<std::vector<uint32_t>, float> add_uint32_vector(const std::vector<uint32_t>& input0, const std::vector<uint32_t>& input1) noexcept
 {
 	// Reserve storage on L1 of core { 0, 0 }
 	// Partition the storage into 3 paritions
@@ -63,8 +65,11 @@ static std::vector<uint32_t> add_uint32_vector(const std::vector<uint32_t>& inpu
 	const std::string kernel_file_path = "tt_metal/programming_examples/rpsingh_examples/add_2_integers_in_riscv/kernels/add_2_integers_in_riscv_kernel.cpp";
 	[[maybe_unused]] tt::tt_metal::KernelHandle kernel_handle = tt::tt_metal::CreateKernel(program, kernel_file_path, single_core, compute_kernel_config);
 
+	std::chrono::steady_clock::time_point_t start = std::chrono::steady_clock::now();
 	// Launch Program using Slow Dispatch (for fast dispatch we could have used CommandQueue and EnqueuPreogram())
 	tt::tt_metal::detail::LaunchProgram(device, program);
+	std::chrono::steady_clock::time_point_t end = std::chrono::steady_clock::now();
+	float elapsed_time = std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(end - start).count();
 
 	// Readback output (from partition #2) to host
 	std::vector<uint32_t> output;
@@ -74,7 +79,7 @@ static std::vector<uint32_t> add_uint32_vector(const std::vector<uint32_t>& inpu
 	// Close the device
 	tt::tt_metal::CloseDevice(device);
 
-	return output;
+	return { output, elapsed_time };
 }
 
 
@@ -86,7 +91,8 @@ int main()
 	std::cout << "input_values0: " << input_values0 << "\n";
 	std::cout << "input_values1: " << input_values1 << "\n";
 
-	std::vector<uint32_t> output_values = add_uint32_vector(input_values0, input_values1);
-
+	auto [output_values, elapsed_time] = add_uint32_vector(input_values0, input_values1);
+	
 	std::cout << "output_values: " << output_values << std::endl;
+	std::cout << "elasepd time: " << elapsed_time << " ms" << std::endl;
 }
