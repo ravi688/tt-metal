@@ -6,9 +6,11 @@
 using namespace std;
 
 
+// Compute kernels must have their entry point wrapped inside namespace 'NAMESPACE'
 namespace NAMESPACE
 {
 
+// Compute kernels must have their entry point name as 'MAIN' without parentheses
 void MAIN
 {
 	uint32_t num_elements = get_compile_time_arg_val(0);

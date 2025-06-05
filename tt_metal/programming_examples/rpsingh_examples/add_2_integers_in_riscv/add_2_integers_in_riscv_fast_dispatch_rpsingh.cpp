@@ -72,7 +72,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 											partition1_base_addr,
 											partition2_base_addr
 										};
-	const std::string kernel_file_path = "tt_metal/programming_examples/rpsingh_examples/add_2_integers_in_riscv_cb/kernels/compute_kernel.cpp";
+	const std::string kernel_file_path = "tt_metal/programming_examples/rpsingh_examples/add_2_integers_in_riscv/kernels/add_2_integers_in_riscv_kernel.cpp";
 	[[maybe_unused]] tt::tt_metal::KernelHandle kernel_handle = tt::tt_metal::CreateKernel(program, kernel_file_path, single_core, compute_kernel_config);
 
 	auto start = std::chrono::steady_clock::now();
