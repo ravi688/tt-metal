@@ -1,6 +1,6 @@
 #include <tt-metalium/host_api.hpp>
 #include <tt-metalium/device.hpp>
-#include <tt-metalium/tt-metal.hpp>
+#include <tt-metalium/tt_metal.hpp>
 
 #include <ostream>
 #include <vector>
