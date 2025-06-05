@@ -30,7 +30,7 @@ struct Result
 	float finish_wait_time;
 };
 
-static std::pair<std::vector<uint32_t>, float> add_uint32_vector(const std::vector<uint32_t>& input0, const std::vector<uint32_t>& input1) noexcept
+static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::vector<uint32_t>& input1) noexcept
 {
 	// Reserve storage on L1 of core { 0, 0 }
 	// Partition the storage into 3 paritions
