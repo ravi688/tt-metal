@@ -80,7 +80,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 
 	// Create Compute Kernel
 	uint32_t l1_unreserved_base = device->allocator()->get_base_allocator_addr(tt::tt_metal::HalMemType::L1);
-	tt::tt_metal::ComputeConfig data_move_kernel_config { };
+	tt::tt_metal::DataMovementConfig data_move_kernel_config { };
 	data_move_kernel_config.compile_args = std::vector<uint32_t>
 										{ 
 											page_count,
