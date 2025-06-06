@@ -36,8 +36,8 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 {
 	const uint32_t input0_buffer_size = input0.size() * sizeof(uint32_t);
 	const uint32_t input1_buffer_size = input1.size() * sizeof(uint32_t);
-	std::assert(input0.size() == input1.size());
-	std::assert(input1_buffer_size % page_count == 0);
+	assert(input0.size() == input1.size());
+	assert(input1_buffer_size % page_count == 0);
 
 	// Reserve storage on L1 of core { 0, 0 }
 	// Partition the storage into 3 paritions
@@ -60,17 +60,17 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 		.size = input0_buffer_size,
 		.page_size = input0_buffer_size / page_count
 	};
-	std::shared_ptr<Buffer> input0_dram_buffer = tt::tt_metal::CreateBuffer(dram_buffer_config);
+	std::shared_ptr<tt::tt_metal::Buffer> input0_dram_buffer = tt::tt_metal::CreateBuffer(dram_buffer_config);
 
 	// Create DRAM buffer for input vector 1
-	std::shared_ptr<Buffer> input1_dram_buffer = tt::tt_metal::CreateBuffer(dram_buffer_config);
+	std::shared_ptr<tt::tt_metal::Buffer> input1_dram_buffer = tt::tt_metal::CreateBuffer(dram_buffer_config);
 
 	// Populate the DRAM buffers with input vectors
 	tt::tt_metal::EnqueueWriteBuffer(command_queue, input0_dram_buffer, input0, false);
 	tt::tt_metal::EnqueueWriteBuffer(command_queue, input1_dram_buffer, input1, false);
 
 	// Create DRAM buffer for output
-	std::shared_ptr<Buffer> output_dram_buffer = std::tt_metal::CreateBuffer(dram_buffer_config);
+	std::shared_ptr<tt::tt_metal::Buffer> output_dram_buffer = tt::tt_metal::CreateBuffer(dram_buffer_config);
 
 	// Just a single core will perform the computation (addition)
 	CoreCoord single_core { 0, 0 };
