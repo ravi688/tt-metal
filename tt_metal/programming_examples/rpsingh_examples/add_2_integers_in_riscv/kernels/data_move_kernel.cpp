@@ -29,7 +29,7 @@ void write_dram_pages(uint32_t dst_dram_address, uint32_t l1_addr, uint32_t page
 void kernel_main()
 {
 	// Number of pages in which the inputs and outputs are divided
-	uint32_t page_count = get_compile_time_arg_val(0)
+	uint32_t page_count = get_compile_time_arg_val(0);
 	// L1 base address
 	uint32_t l1_mem_addr = get_compile_time_arg_val(1);
 	// element counts in the input vectors
