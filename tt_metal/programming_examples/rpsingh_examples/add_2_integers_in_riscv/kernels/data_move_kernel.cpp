@@ -1,5 +1,6 @@
 
 #include "dataflow_api.h"
+#include "debug/dprint.h"
 
 // On wormhole chip we have 12 DRAM banks
 static constexpr uint32_t DRAM_BANK_COUNT = 12;
