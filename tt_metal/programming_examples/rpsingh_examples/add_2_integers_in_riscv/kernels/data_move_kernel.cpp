@@ -58,7 +58,7 @@ void kernel_main()
 	// Perform Addition
 	for(uint32_t i = 0; i < input_size; ++i)
 	{
-		DPRINT() << "input0[" << i << "] " << input0_l1_ptr[i] << ", input1[" << i << "] " << input1_l1_ptr[i] << ENDL();
+		DPRINT << "input0[" << i << "] " << input0_l1_ptr[i] << ", input1[" << i << "] " << input1_l1_ptr[i] << ENDL();
 		output_l1_ptr[i] = input0_l1_ptr[i] + input1_l1_ptr[i];
 	}
 
