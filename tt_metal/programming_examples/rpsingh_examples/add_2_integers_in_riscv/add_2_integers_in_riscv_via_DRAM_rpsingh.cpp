@@ -66,8 +66,8 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	std::shared_ptr<tt::tt_metal::Buffer> input1_dram_buffer = tt::tt_metal::CreateBuffer(dram_buffer_config);
 
 	// Populate the DRAM buffers with input vectors
-	tt::tt_metal::EnqueueWriteBuffer(command_queue, input0_dram_buffer, input0, false);
-	tt::tt_metal::EnqueueWriteBuffer(command_queue, input1_dram_buffer, input1, false);
+	tt::tt_metal::EnqueueWriteBuffer(command_queue, input0_dram_buffer, const_cast<std::vector<uint32_t>&>(input0), false);
+	tt::tt_metal::EnqueueWriteBuffer(command_queue, input1_dram_buffer, const_cast<std::vector<uint32_t>&>(input1), false);
 
 	// Create DRAM buffer for output
 	std::shared_ptr<tt::tt_metal::Buffer> output_dram_buffer = tt::tt_metal::CreateBuffer(dram_buffer_config);
