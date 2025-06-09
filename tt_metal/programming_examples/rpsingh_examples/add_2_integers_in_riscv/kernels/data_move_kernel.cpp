@@ -7,7 +7,6 @@ static constexpr uint32_t DRAM_BANK_COUNT = 12;
 
 void read_dram_pages(uint32_t src_dram_address, uint32_t l1_addr, uint32_t page_count, uint32_t page_size)
 {
-	DPRINT << "src_dram_address: " << src_dram_address << ENDL();
 	for(uint32_t i = 0; i < page_count; ++i)
 	{
 		uint32_t bank_id = i % DRAM_BANK_COUNT;
@@ -59,10 +58,7 @@ void kernel_main()
 
 	// Perform Addition
 	for(uint32_t i = 0; i < input_size; ++i)
-	{
-		DPRINT << "input0[" << i << "] " << input0_l1_ptr[i] << ", input1[" << i << "] " << input1_l1_ptr[i] << ENDL();
 		output_l1_ptr[i] = input0_l1_ptr[i] + input1_l1_ptr[i];
-	}
 
 	// Write output DRAM buffer from L1
 	write_dram_pages(output_dram_address, output_l1_address, page_count, page_size);
