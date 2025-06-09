@@ -112,6 +112,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	start = std::chrono::steady_clock::now();
 	// Read back from output DRAM buffer to the host vector
 	tt::tt_metal::EnqueueReadBuffer(command_queue, output_dram_buffer, output, true);
+	end = std::chrono::steady_clock::now();
 	auto output_readback_time = std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(end - start).count(); 
 
 	// Close the device
