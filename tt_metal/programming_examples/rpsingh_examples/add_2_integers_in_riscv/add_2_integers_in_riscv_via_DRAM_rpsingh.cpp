@@ -8,6 +8,8 @@
 #include <utility>
 #include <chrono>
 #include <cassert>
+#include <algorithm>
+#include <random>
 
 
 template<typename T>
@@ -121,11 +123,24 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	return { std::move(output), enqueue_elapsed, kernel_finish_wait_time, output_readback_time };
 }
 
+std::vector<uint32_t> get_populated_vector(uint32_t count)
+{
+	std::vector<uint32_t> v(count);
+	std::ranges::generate(v, []()
+	{
+		static std::uniform_int_distribution<uint32_t> distribution(1, 10);
+		static std::random_device rd;
+		static std::mt19937 prng(rd());
+		return distribution(prng);
+	});
+	return v;
+}
+
 
 int main()
 {
-	std::vector<uint32_t> input_values0 = { 1, 2, 3, 4, 5, 6 };
-	std::vector<uint32_t> input_values1 = { 7, 8, 9, 10, 11, 12 };
+	std::vector<uint32_t> input_values0 = get_populated_vector(input_values0, 32);
+	std::vector<uint32_t> input_values1 = get_populated_vector(input_values1, 32);
 
 	std::cout << "input_values0: " << input_values0 << "\n";
 	std::cout << "input_values1: " << input_values1 << "\n";
