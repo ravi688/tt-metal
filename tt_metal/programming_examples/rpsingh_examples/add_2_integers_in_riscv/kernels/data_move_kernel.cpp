@@ -13,8 +13,8 @@ void read_dram_pages(uint32_t src_dram_address, uint32_t l1_addr, uint32_t page_
 		auto dram_noc_addr = get_noc_addr_from_bank_id<true>(bank_id, src_dram_address);
 		DPRINT << dram_noc_addr << ENDL();
 		noc_async_read(dram_noc_addr, l1_addr + i * page_size, page_size);
-		noc_async_read_barrier();
 	}
+	noc_async_read_barrier();
 }
 
 void write_dram_pages(uint32_t dst_dram_address, uint32_t l1_addr, uint32_t page_count, uint32_t page_size)
@@ -24,8 +24,8 @@ void write_dram_pages(uint32_t dst_dram_address, uint32_t l1_addr, uint32_t page
 		uint32_t bank_id = i % DRAM_BANK_COUNT;
 		auto dram_noc_addr = get_noc_addr_from_bank_id<true>(bank_id, dst_dram_address);
 		noc_async_write(l1_addr + i * page_size, dram_noc_addr, page_size);
-		noc_async_write_barrier();
 	}
+	noc_async_write_barrier();
 }
 
 void kernel_main()
