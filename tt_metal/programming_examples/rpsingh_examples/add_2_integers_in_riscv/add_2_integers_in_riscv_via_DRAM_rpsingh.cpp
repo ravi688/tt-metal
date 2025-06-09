@@ -139,8 +139,8 @@ std::vector<uint32_t> get_populated_vector(uint32_t count)
 
 int main()
 {
-	std::vector<uint32_t> input_values0 = get_populated_vector(input_values0, 32);
-	std::vector<uint32_t> input_values1 = get_populated_vector(input_values1, 32);
+	std::vector<uint32_t> input_values0 = get_populated_vector(32);
+	std::vector<uint32_t> input_values1 = get_populated_vector(32);
 
 	std::cout << "input_values0: " << input_values0 << "\n";
 	std::cout << "input_values1: " << input_values1 << "\n";
