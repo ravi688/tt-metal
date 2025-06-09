@@ -41,13 +41,6 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	assert(input0.size() == input1.size());
 	assert(input1_buffer_size % page_count == 0);
 
-	// Reserve storage on L1 of core { 0, 0 }
-	// Partition the storage into 3 paritions
-	// Populate the input0 into partition #0 (host to L1)
-	// Populate the input1 into partition #1 (host to L1)
-	// Populate the output into partition #2 (host to L1)
-	// Read back the partition #2 to host's vector (L1 to host)
-
 	// Create Device
 	uint32_t device_id = 0;
 	tt::tt_metal::IDevice* device = tt::tt_metal::CreateDevice(device_id);
