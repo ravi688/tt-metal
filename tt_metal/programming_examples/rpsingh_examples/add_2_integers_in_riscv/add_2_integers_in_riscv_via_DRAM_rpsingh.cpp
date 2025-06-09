@@ -76,6 +76,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 
 	// Just a single core will perform the computation (addition)
 	CoreCoord single_core { 0, 0 };
+	single_core = device->worker_core_from_logical_core(single_core);
 
 	// Create Program
 	tt::tt_metal::Program program = tt::tt_metal::CreateProgram();
