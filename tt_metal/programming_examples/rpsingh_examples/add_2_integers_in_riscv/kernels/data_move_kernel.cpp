@@ -7,6 +7,7 @@ static constexpr uint32_t DRAM_BANK_COUNT = 12;
 
 void read_dram_pages(uint32_t src_dram_address, uint32_t l1_addr, uint32_t page_count, uint32_t page_size)
 {
+	DPRINT << "src_dram_address: " << src_dram_address << ENDL();
 	for(uint32_t i = 0; i < page_count; ++i)
 	{
 		uint32_t bank_id = page_count % DRAM_BANK_COUNT;
