@@ -2,8 +2,8 @@
 #include "dataflow_api.h"
 #include "debug/dprint.h"
 
-// On wormhole chip we have 12 DRAM banks
-static constexpr uint32_t DRAM_BANK_COUNT = 12;
+// On wormhole chip we have 6 DRAM banks
+static constexpr uint32_t DRAM_BANK_COUNT = 6;
 
 void read_dram_pages(uint32_t src_dram_address, uint32_t l1_addr, uint32_t page_count, uint32_t page_size)
 {
