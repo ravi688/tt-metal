@@ -12,7 +12,7 @@ void read_dram_pages(uint32_t src_dram_address, uint32_t l1_addr, uint32_t page_
 		// Round-robin the bank id around 'DRAM_BANK_COUNT' banks
 		uint32_t bank_id = i % DRAM_BANK_COUNT;
 		auto dram_noc_addr = get_noc_addr_from_bank_id<true>(bank_id, src_dram_address);
-		// Reads should be aligned to 32 bytes
+		// Reads should be aligned to 32 bytes on wormhole
 		// That means read size should always be a multiple of 32 bytes
 		noc_async_read(dram_noc_addr, l1_addr + i * page_size, page_size);
 	}
@@ -26,7 +26,7 @@ void write_dram_pages(uint32_t dst_dram_address, uint32_t l1_addr, uint32_t page
 		// Round-robin the bank id around 'DRAM_BANK_COUNT' banks
 		uint32_t bank_id = i % DRAM_BANK_COUNT;
 		auto dram_noc_addr = get_noc_addr_from_bank_id<true>(bank_id, dst_dram_address);
-		// Writes should be aligned to 32 bytes
+		// Writes should be aligned to 16 bytes on wormhole
 		// That means write size should always be a multiple of 32 bytes
 		noc_async_write(l1_addr + i * page_size, dram_noc_addr, page_size);
 	}
