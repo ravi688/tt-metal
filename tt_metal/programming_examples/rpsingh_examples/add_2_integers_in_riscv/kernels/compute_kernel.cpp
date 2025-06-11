@@ -19,6 +19,8 @@ namespace NAMESPACE
 
 		// Runs parts in MATH, PACK, and UNPACK
 		binary_op_init_common(input0_cb_index, input1_cb_index, output_cb_index);
+		// Runs parts in MATH, and UNPACK
+		add_tiles_init(input0_cb_index, input1_cb_index);
 
 		uint32_t i = 0;
 		while(i < input_num_elements)
