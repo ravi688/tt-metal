@@ -162,6 +162,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	auto start = std::chrono::steady_clock::now();
 	// Launch Program using Fast Dispatch
 	tt::tt_metal::EnqueueProgram(command_queue, program, false);
+	std::cout << "165\n";
 	auto end = std::chrono::steady_clock::now();
 	auto enqueue_elapsed = std::chrono::duration_cast<std::chrono::duration<float, std::milli>>(end - start).count();
 
