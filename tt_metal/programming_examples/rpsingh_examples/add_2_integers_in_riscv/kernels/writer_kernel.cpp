@@ -45,4 +45,6 @@ void kernel_main()
 			write_bytes += cb_page_size;
 		}
 	}
+
+	DPRINT << "writer finished" << ENDL();
 }

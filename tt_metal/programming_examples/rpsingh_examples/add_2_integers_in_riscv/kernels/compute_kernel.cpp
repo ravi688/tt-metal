@@ -38,6 +38,6 @@ namespace NAMESPACE
 
 			++i;
 		}
-
+		DPRINT << "compute finished" << ENDL();
 	}
 }

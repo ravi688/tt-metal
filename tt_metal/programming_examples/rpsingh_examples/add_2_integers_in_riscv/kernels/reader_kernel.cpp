@@ -49,5 +49,5 @@ void kernel_main()
 			read_bytes += cb_page_size;
 		}
 	}
-
+	DPRINT << "reader finished" << ENDL();
 }
