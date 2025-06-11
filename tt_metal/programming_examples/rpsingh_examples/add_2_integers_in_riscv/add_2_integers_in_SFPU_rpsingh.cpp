@@ -109,9 +109,9 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 
 	// Instantiate Kernels
 
-	const std::string compute_kernel_path = "tt_metal/programming_examples/rpsingh_examples/add_2_integers_in_riscv/kernels/compute_kernel.cpp";
-	const std::string reader_kernel_path = "tt_metal/programming_examples/rpsingh_examples/add_2_integers_in_riscv/kernels/reader_kernel.cpp";
-	const std::string writer_kernel_path = "tt_metal/programming_examples/rpsingh_examples/add_2_integers_in_riscv/kernels/writer_kernel.cpp";
+	const std::string compute_kernel_file_path = "tt_metal/programming_examples/rpsingh_examples/add_2_integers_in_riscv/kernels/compute_kernel.cpp";
+	const std::string reader_kernel_file_path = "tt_metal/programming_examples/rpsingh_examples/add_2_integers_in_riscv/kernels/reader_kernel.cpp";
+	const std::string writer_kernel_file_path = "tt_metal/programming_examples/rpsingh_examples/add_2_integers_in_riscv/kernels/writer_kernel.cpp";
 
 	// Create Compute Kernel
 	tt::tt_metal::ComputeConfig compute_kernel_config { };
