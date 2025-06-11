@@ -16,6 +16,7 @@ void read_dram_page_into_cb_page(uint32_t bank_id, uint32_t bank_addr_offset, ui
 	uint64_t dram_noc_address = get_noc_addr_from_bank_id<true>(bank_id, bank_addr_offset);
 	uint32_t cb_page_size = get_tile_size(cb_index);
 	noc_async_read(dram_noc_address, cb_l1_address, cb_page_size);
+	noc_async_read_barrier();
 	
 	// Make this tile visible to a reader (via cb_wait_front())
 	cb_push_back(cb_index, 1);
