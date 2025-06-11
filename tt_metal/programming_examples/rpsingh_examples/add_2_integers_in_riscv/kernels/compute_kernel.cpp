@@ -22,8 +22,8 @@ namespace NAMESPACE
 		// Runs parts in MATH, and UNPACK
 	//	add_tiles_init(input0_cb_index, input1_cb_index);
 
-		uint32_t cb_page_size = get_tile_size(input1_cb_index);
-		uint32_t num_ints_per_cb_page = cb_page_size / sizeof(uint32_t);
+		// uint32_t cb_page_size = get_tile_size(input1_cb_index);
+		// uint32_t num_ints_per_cb_page = cb_page_size / sizeof(uint32_t);
 
 		uint32_t i = 0;
 		while(i < input_num_elements)
