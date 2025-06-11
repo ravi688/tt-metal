@@ -146,7 +146,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	// Create Writer Kernel
 	tt::tt_metal::WriterDataMovementConfig writer_kernel_config { };
 	{
-		std:vector<uint32_t> writer_kernel_compile_args = 
+		std::vector<uint32_t> writer_kernel_compile_args = 
 		{
 			input0.size(),
 			page_count,
