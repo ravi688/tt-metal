@@ -32,10 +32,12 @@ namespace NAMESPACE
 		{
 			// Wait for the writer kernel to read and pop out to a tile
 			cb_reserve_back(output_cb_index, 1);
+			DPRINT << "cb_reserve_back" << ENDL();
 
 			// Wait for the reader kernel to write and push back a tile in input0 cb, and input1 cb
 			cb_wait_front(input0_cb_index, 1);
 			cb_wait_front(input1_cb_index, 1);
+			DPRINT << "cb_wait_front (2)" << ENDL();
 
 		//	auto* input0_ptr = get_read_ptr<uint32_t>(input0_cb_index);
 		//	auto* input1_ptr = get_read_ptr<uint32_t>(input1_cb_index);
