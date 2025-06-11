@@ -119,6 +119,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 		std::vector<uint32_t> compile_kernel_compile_args = 
 		{
 			input0.size(),
+			cb_page_size,
 			input0_cb_index,
 			input1_cb_index,
 			output_cb_index

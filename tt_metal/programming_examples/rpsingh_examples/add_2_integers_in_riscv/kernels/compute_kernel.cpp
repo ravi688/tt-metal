@@ -13,51 +13,21 @@ namespace NAMESPACE
 		// Compute Kernel for add_2_integers_in_SFPU_rpsingh.cpp
 
 		uint32_t input_num_elements = get_compile_time_arg_val(0);
-		uint32_t input0_cb_index = get_compile_time_arg_val(1);
-		uint32_t input1_cb_index = get_compile_time_arg_val(2);
-		uint32_t output_cb_index = get_compile_time_arg_val(3);
+		uint32_t cb_page_size = get_compile_time_arg_val(1);
+		uint32_t input0_cb_index = get_compile_time_arg_val(2);
+		uint32_t input1_cb_index = get_compile_time_arg_val(3);
+		uint32_t output_cb_index = get_compile_time_arg_val(4);
 
-		// Runs parts in MATH, PACK, and UNPACK
-	//	binary_op_init_common(input0_cb_index, input1_cb_index, output_cb_index);
-		// Runs parts in MATH, and UNPACK
-	//	add_tiles_init(input0_cb_index, input1_cb_index);
-
-		// uint32_t cb_page_size = get_tile_size(input1_cb_index);
-		// uint32_t num_ints_per_cb_page = cb_page_size / sizeof(uint32_t);
-
-		DPRINT << "input_num_elements: " << input_num_elements << ENDL();
-
+		uint32_t num_cb_pages_to_read = (input_num_elements * sizeof(uint32_t)) /  cb_page_size;
 		uint32_t i = 0;
-		while(i < input_num_elements)
+		while(i < num_cb_pages_to_read)
 		{
 			// Wait for the writer kernel to read and pop out to a tile
 			cb_reserve_back(output_cb_index, 1);
-			DPRINT << "cb_reserve_back" << ENDL();
 
 			// Wait for the reader kernel to write and push back a tile in input0 cb, and input1 cb
 			cb_wait_front(input0_cb_index, 1);
 			cb_wait_front(input1_cb_index, 1);
-			DPRINT << "cb_wait_front (2)" << ENDL();
-
-		//	auto* input0_ptr = get_read_ptr<uint32_t>(input0_cb_index);
-		//	auto* input1_ptr = get_read_ptr<uint32_t>(input1_cb_index);
-
-		//	DPRINT << "----- TILE [" << i << "] ------" << ENDL();
-		//	for(uint32_t j = 0; j < num_ints_per_cb_page; ++j)
-		//		DPRINT << input0_ptr[j] << ", " << input1_ptr[j] << ENDL();
-
-			// Runs in MATH
-		//	tile_regs_acquire();
-
-			// Runs parts in UNPACK, and MATH
-		//	add_tiles(input0_cb_index, input1_cb_index, i, i, i);
-
-			// Runs in MATH
-		//	tile_regs_commit();
-			// Runs in PACK
-		//	pack_tile(i, output_cb_index);
-			// Runs in PACK
-		//	tile_regs_release();
 
 			// Remove one tile from each input circular buffer and let the reader kernel to write another tile into these cb(s).
 			cb_pop_front(input0_cb_index, 1);
