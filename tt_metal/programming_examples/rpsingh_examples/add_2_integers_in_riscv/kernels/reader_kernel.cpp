@@ -19,6 +19,7 @@ void read_dram_page_into_cb_page(uint32_t bank_id, uint32_t bank_addr_offset, ui
 	
 	// Make this tile visible to a reader (via cb_wait_front())
 	cb_push_back(cb_index, 1);
+	DPRINT << "(reader) cb_push_back" << ENDL();
 }
 
 void kernel_main()
