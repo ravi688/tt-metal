@@ -18,9 +18,12 @@ namespace NAMESPACE
 		uint32_t output_cb_index = get_compile_time_arg_val(3);
 
 		// Runs parts in MATH, PACK, and UNPACK
-		binary_op_init_common(input0_cb_index, input1_cb_index, output_cb_index);
+	//	binary_op_init_common(input0_cb_index, input1_cb_index, output_cb_index);
 		// Runs parts in MATH, and UNPACK
-		add_tiles_init(input0_cb_index, input1_cb_index);
+	//	add_tiles_init(input0_cb_index, input1_cb_index);
+
+		uint32_t cb_page_size = get_tile_size(input1_cb_index);
+		uint32_t num_ints_per_cb_page = cb_page_size / sizeof(uint32_t);
 
 		uint32_t i = 0;
 		while(i < input_num_elements)
@@ -32,18 +35,25 @@ namespace NAMESPACE
 			cb_wait_front(input0_cb_index, 1);
 			cb_wait_front(input1_cb_index, 1);
 
+			auto* input0_ptr = get_read_ptr<uint32_t>(input0_cb_index);
+			auto* input1_ptr = get_read_ptr<uint32_t>(input1_cb_index);
+
+			DPRINT << "----- TILE [" << i << "] ------" << ENDL();
+			for(uint32_t j = 0; j < num_ints_per_cb_page; ++j)
+				DPRINT << input0_ptr[j] << ", " << input1_ptr[j] << ENDL();
+
 			// Runs in MATH
-			tile_regs_acquire();
+		//	tile_regs_acquire();
 
 			// Runs parts in UNPACK, and MATH
-			add_tiles(input0_cb_index, input1_cb_index, i, i, i);
+		//	add_tiles(input0_cb_index, input1_cb_index, i, i, i);
 
 			// Runs in MATH
-			tile_regs_commit();
+		//	tile_regs_commit();
 			// Runs in PACK
-			pack_tile(i, output_cb_index);
+		//	pack_tile(i, output_cb_index);
 			// Runs in PACK
-			tile_regs_release();
+		//	tile_regs_release();
 
 			// Remove one tile from each input circular buffer and let the reader kernel to write another tile into these cb(s).
 			cb_pop_front(input0_cb_index, 1);
