@@ -1,7 +1,6 @@
 #include "compute_kernel_api.h"
 #include "compute_kernel_api/eltwise_binary.h"
 #include "compute_kernel_api/tile_move_copy.h"
-#include "dataflow_api.h"
 
 #include <cstdint>
 
@@ -36,12 +35,12 @@ namespace NAMESPACE
 			cb_wait_front(input0_cb_index, 1);
 			cb_wait_front(input1_cb_index, 1);
 
-			auto* input0_ptr = get_read_ptr<uint32_t>(input0_cb_index);
-			auto* input1_ptr = get_read_ptr<uint32_t>(input1_cb_index);
+		//	auto* input0_ptr = get_read_ptr<uint32_t>(input0_cb_index);
+		//	auto* input1_ptr = get_read_ptr<uint32_t>(input1_cb_index);
 
-			DPRINT << "----- TILE [" << i << "] ------" << ENDL();
-			for(uint32_t j = 0; j < num_ints_per_cb_page; ++j)
-				DPRINT << input0_ptr[j] << ", " << input1_ptr[j] << ENDL();
+		//	DPRINT << "----- TILE [" << i << "] ------" << ENDL();
+		//	for(uint32_t j = 0; j < num_ints_per_cb_page; ++j)
+		//		DPRINT << input0_ptr[j] << ", " << input1_ptr[j] << ENDL();
 
 			// Runs in MATH
 		//	tile_regs_acquire();
