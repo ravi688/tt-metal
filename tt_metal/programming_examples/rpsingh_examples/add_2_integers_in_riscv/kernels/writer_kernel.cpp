@@ -30,6 +30,9 @@ void kernel_main()
 	uint32_t output_cb_index = get_compile_time_arg_val(2);
 	uint32_t output_dram_address = get_compile_time_arg_val(3);
 
+	const uint32_t num_ints_per_dram_page = input_num_elements / dram_page_count;
+	const uint32_t dram_page_size = num_ints_per_dram_page * sizeof(uint32_t);
+	
 	uint32_t cb_page_size = get_tile_size(output_cb_index);
 
 	for(uint32_t i = 0; i < dram_page_count; ++i)
