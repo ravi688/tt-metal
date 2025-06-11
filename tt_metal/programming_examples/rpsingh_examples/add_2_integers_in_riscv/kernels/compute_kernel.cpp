@@ -25,6 +25,8 @@ namespace NAMESPACE
 		// uint32_t cb_page_size = get_tile_size(input1_cb_index);
 		// uint32_t num_ints_per_cb_page = cb_page_size / sizeof(uint32_t);
 
+		DPRINT << "input_num_elements: " << input_num_elements << ENDL();
+
 		uint32_t i = 0;
 		while(i < input_num_elements)
 		{
