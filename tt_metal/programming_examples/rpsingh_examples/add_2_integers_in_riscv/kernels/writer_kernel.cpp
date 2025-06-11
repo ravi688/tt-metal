@@ -1,5 +1,5 @@
 
-#include "dataflow_kernel_api.h"
+#include "dataflow_api.h"
 #include "compile_time_args.h"
 
 #include <cstdint>

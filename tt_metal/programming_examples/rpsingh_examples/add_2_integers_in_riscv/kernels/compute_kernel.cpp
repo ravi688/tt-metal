@@ -1,5 +1,9 @@
 #include "compute_kernel_api.h"
 
+#include <cstdint>
+
+using namespace std;
+
 namespace NAMESPACE
 {
 	void MAIN
