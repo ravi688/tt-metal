@@ -74,7 +74,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	// Create Program
 	tt::tt_metal::Program program = tt::tt_metal::CreateProgram();
 
-	constexpr uint32_t cb_page_size = 4 * sizeof(uint32_t);
+	constexpr uint32_t cb_page_size = 8 * sizeof(uint32_t);
 
 	assert((input0.size() * sizeof(uint32_t)) % cb_page_size == 0);
 	
