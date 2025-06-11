@@ -1,6 +1,7 @@
 #include "compute_kernel_api.h"
 #include "compute_kernel_api/eltwise_binary.h"
 #include "compute_kernel_api/tile_move_copy.h"
+#include "dataflow_api.h"
 
 #include <cstdint>
 
