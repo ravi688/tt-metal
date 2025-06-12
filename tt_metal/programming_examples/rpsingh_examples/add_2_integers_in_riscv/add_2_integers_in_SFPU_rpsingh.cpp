@@ -159,6 +159,8 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	[[maybe_unused]] tt::tt_metal::KernelHandle writer_kernel_handle = tt::tt_metal::CreateKernel(program, writer_kernel_file_path, single_core, writer_kernel_config);
 	
 
+	tt::tt_metal::Finish(command_queue);
+	std::cout << "Device-local-DRAM population finished" << std::endl;
 	auto start = std::chrono::steady_clock::now();
 	// Launch Program using Fast Dispatch
 	tt::tt_metal::EnqueueProgram(command_queue, program, false);
