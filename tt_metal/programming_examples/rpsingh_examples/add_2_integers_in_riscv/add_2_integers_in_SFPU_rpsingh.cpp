@@ -74,7 +74,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	// Create Program
 	tt::tt_metal::Program program = tt::tt_metal::CreateProgram();
 
-	constexpr uint32_t cb_page_size = 8 * sizeof(uint32_t);
+	constexpr uint32_t cb_page_size = 1024 * sizeof(uint32_t);
 
 	assert((input0.size() * sizeof(uint32_t)) % cb_page_size == 0);
 	
@@ -204,8 +204,8 @@ std::vector<uint32_t> get_populated_vector(uint32_t count)
 
 int main()
 {
-	std::vector<uint32_t> input_values0 = get_populated_vector(32);
-	std::vector<uint32_t> input_values1 = get_populated_vector(32);
+	std::vector<uint32_t> input_values0 = get_populated_vector(4096);
+	std::vector<uint32_t> input_values1 = get_populated_vector(4096);
 
 	std::cout << "input_values0: " << input_values0 << "\n";
 	std::cout << "input_values1: " << input_values1 << "\n";
