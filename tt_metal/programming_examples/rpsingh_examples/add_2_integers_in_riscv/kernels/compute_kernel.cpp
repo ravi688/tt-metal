@@ -23,11 +23,23 @@ namespace NAMESPACE
 		while(i < num_cb_pages_to_read)
 		{
 			// Wait for the writer kernel to read and pop out to a tile
-			cb_reserve_back(output_cb_index, 1);
+			// cb_reserve_back(output_cb_index, 1);
 
 			// Wait for the reader kernel to write and push back a tile in input0 cb, and input1 cb
 			cb_wait_front(input0_cb_index, 1);
 			cb_wait_front(input1_cb_index, 1);
+
+
+    		tile_regs_acquire();  // acquire 8 tile registers
+
+    		add_tiles(input0_cb_index, input1_cb_index, 0, 0, 0);
+
+    		tile_regs_commit();  // signal the packer
+
+    		tile_regs_wait();  // packer waits here
+    		pack_tile(0, output_cb_index);
+    		tile_regs_release();  // packer releases
+
 
 			// Remove one tile from each input circular buffer and let the reader kernel to write another tile into these cb(s).
 			cb_pop_front(input0_cb_index, 1);
