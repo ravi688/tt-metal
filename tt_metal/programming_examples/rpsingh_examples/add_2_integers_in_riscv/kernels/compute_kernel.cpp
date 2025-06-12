@@ -33,8 +33,12 @@ namespace NAMESPACE
 			cb_pop_front(input0_cb_index, 1);
 			cb_pop_front(input1_cb_index, 1);
 
+			DPRINT << "(compute) (2 times) cb_pop_front (inputs:0,1)" << ENDL();
+
 			// Add tile and let the writer kernel to read this tile
 			cb_push_back(output_cb_index, 1);
+
+			DPRINT << "(compute) cb_push_back (output(2)) " << ENDL();
 
 			++i;
 		}

@@ -18,7 +18,7 @@ void write_cb_page_into_dram_page(uint32_t bank_id, uint32_t bank_addr_offset, u
 
 	// Remove the tile to make space for another tile
 	cb_pop_front(cb_index, 1);
-	DPRINT << "(writer) cb_pop_front" << ENDL();
+	DPRINT << "(writer) cb_pop_front (" << cb_index << ")" << ENDL();
 }
 
 void kernel_main()
