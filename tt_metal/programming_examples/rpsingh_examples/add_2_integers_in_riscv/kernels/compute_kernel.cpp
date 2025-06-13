@@ -26,7 +26,7 @@ namespace NAMESPACE
 		while(i < num_cb_pages_to_read)
 		{
 			// Wait for the writer kernel to read and pop out to a tile
-			// cb_reserve_back(output_cb_index, 1);
+			cb_reserve_back(output_cb_index, 1);
 
 			// Wait for the reader kernel to write and push back a tile in input0 cb, and input1 cb
 			cb_wait_front(input0_cb_index, 1);
