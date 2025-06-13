@@ -18,6 +18,9 @@ namespace NAMESPACE
 		uint32_t input1_cb_index = get_compile_time_arg_val(3);
 		uint32_t output_cb_index = get_compile_time_arg_val(4);
 
+    	binary_op_init_common(input0_cb_index, input1_cb_index, output_cb_index);
+    	add_tiles_init(input0_cb_index, input1_cb_index);
+
 		uint32_t num_cb_pages_to_read = (input_num_elements * sizeof(uint32_t)) /  cb_page_size;
 		uint32_t i = 0;
 		while(i < num_cb_pages_to_read)
