@@ -23,7 +23,7 @@ namespace NAMESPACE
 		uint32_t num_cb_pages_to_read = (input_num_elements * sizeof(uint32_t)) /  cb_page_size;
 		uint32_t i = 0;
 
-		unary_op_init_common(input0_cb_index, input1_cb_index);
+		init_sfpu(input0_cb_index, input1_cb_index);
 
 		while(i < num_cb_pages_to_read)
 		{
