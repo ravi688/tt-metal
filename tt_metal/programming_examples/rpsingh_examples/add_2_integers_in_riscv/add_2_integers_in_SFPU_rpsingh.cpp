@@ -101,7 +101,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	// Create circular buffer for collecting output data from the compute core
 	// The writer kernel would read output data from this circular buffer and write to device-local-DRAM buffer
 	// The compute kernel would write the output data to this circular buffer
-	constexpr uint32_t output_cb_index = tt::CBIndex::c_2;
+	constexpr uint32_t output_cb_index = tt::CBIndex::c_31;
 	constexpr uint32_t output_cb_buffer_size = cb_page_count * cb_page_size;
 	tt::tt_metal::CircularBufferConfig output_cb_config(output_cb_buffer_size, { { output_cb_index, tt::DataFormat::UInt32 } });
 	output_cb_config.set_page_size(output_cb_index, cb_page_size);
