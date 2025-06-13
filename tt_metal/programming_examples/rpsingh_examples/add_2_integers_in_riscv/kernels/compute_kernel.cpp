@@ -1,5 +1,6 @@
 #include "compute_kernel_api.h"
 #include "compute_kernel_api/eltwise_binary.h"
+#include "compute_kernel_api/eltwise_unary/eltwise_unary.h"
 #include "compute_kernel_api/tile_move_copy.h"
 #include "compute_kernel_api/add_uint32_sfpu.h"
 
@@ -21,6 +22,9 @@ namespace NAMESPACE
 
 		uint32_t num_cb_pages_to_read = (input_num_elements * sizeof(uint32_t)) /  cb_page_size;
 		uint32_t i = 0;
+
+		unary_op_init_common(input0_cb_index, input1_cb_index);
+
 		while(i < num_cb_pages_to_read)
 		{
 			// Wait for the writer kernel to read and pop out to a tile
