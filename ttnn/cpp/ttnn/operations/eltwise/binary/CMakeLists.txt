@@ -17,6 +17,8 @@ target_sources(
         common/binary_op_utils.cpp
         device/binary_composite_op.cpp
         device/binary_device_operation.cpp
+        device/fast_tensor_add_device_operation.cpp
+        device/fast_tensor_add_factory.cpp
         device/broadcast_height_and_width_multi_core_program_factory.cpp
         device/broadcast_height_multi_core_program_factory.cpp
         device/broadcast_width_multi_core_program_factory.cpp
