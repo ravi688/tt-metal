@@ -1,3 +1,13 @@
+# BrainStorming:
+#
+# On the hardware level pages are allocated on each dram bank with certain (fixed) alignment.
+# On the Metallium level pages are allocated in lock-step across the DRAM/L1 banks, and Buffers are allocated in-terms-of pages allocated in round-robin fashion across the DRAM/L1 banks.
+# On the TTNN level tensors are allocated in ROW_MAJOR or TILE_LAYOUT. In which each row is allocated as a single page and each tile is also allocated a single page.
+#   - Note: tile size is always 32x32 elements, at most 32x32x4 = 4096 bytes.
+
+
+
+
 import ttnn
 import torch
 
@@ -6,14 +16,14 @@ device_id = 0
 tt_device = ttnn.open_device(device_id = 0)
 
 # Create torch tensors with element data type torch.float32
-torch_tensor_a = torch.Tensor([[2, 3, 4], [5, 6, 7]]).to(dtype=torch.float32)
-torch_tensor_b = torch.Tensor([[6, 7, 8], [3, 2, 1]]).to(dtype=torch.float32)
+torch_tensor_a = torch.Tensor([[2, 3, 4], [5, 6, 7]]).to(dtype=torch.uint32)
+torch_tensor_b = torch.Tensor([[6, 7, 8], [3, 2, 1]]).to(dtype=torch.uint32)
 
 # Convert torch tensors to ttnn tensors
 # Note: that the resultant ttnn tensors are still in the host's memory
 # Note: binary element wise operations require the tensor operands to be in TILE_LAYOUT layout
-tensor_a = ttnn.from_torch(torch_tensor_a, dtype=ttnn.float32, layout=ttnn.TILE_LAYOUT)
-tensor_b = ttnn.from_torch(torch_tensor_b, dtype=ttnn.float32, layout=ttnn.TILE_LAYOUT)
+tensor_a = ttnn.from_torch(torch_tensor_a, dtype=ttnn.uint32, layout=ttnn.TILE_LAYOUT)
+tensor_b = ttnn.from_torch(torch_tensor_b, dtype=ttnn.uint32, layout=ttnn.TILE_LAYOUT)
 
 print('Torch: ')
 print('\ttensor_a: ' + str(torch_tensor_a))

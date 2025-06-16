@@ -32,29 +32,27 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     // Create a program
     tt::tt_metal::Program program = tt::tt_metal::CreateProgram();
 
-    uint32_t num_elements = input_tensor_a.get_logical_shape().volume();
+    const auto& tensor_shape = input_tensor_a.logical_shape();
 
-    printf("num_elements: %u", num_elements);
+    std::cout << "Tensor Shape: " << tensor_shape[0] << " x " << tensor_shape[1] << std::endl;
 
     std::vector<uint32_t> compute_kernel_compute_args = 
     {
         src1_buffer->address(),
         src2_buffer->address(),
         dst_buffer->address(),
-        num_elements
+        tensor_shape[1]
     };
-
 
     ComputeConfig compute_kernel_config { };
     compute_kernel_config.compile_args = std::move(compute_kernel_compute_args);
 
-    constexpr CoreCoord core = { 0, 0 };
+    constexpr CoreRange core_range { { 0, 0 }, { tensor_shape[0], 0 } };
     // Create Compute kernel (Loads the two tiles from L1 and computes addition and writes back to L1)
     tt::tt_metal::KernelHandle compute_kernel_handle = tt::tt_metal::CreateKernel(program,
                                                         "ttnn/cpp/ttnn/operations/eltwise/binary/device/kernels/compute/fast_tensor_add_kernel.cpp",
-                                                        core, std::move(compute_kernel_config));
+                                                        core_range, std::move(compute_kernel_config));
 
-  
     return { std::move(program), { .compute_kernel_id = compute_kernel_handle }};
 }
 
