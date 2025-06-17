@@ -16,14 +16,14 @@ device_id = 0
 tt_device = ttnn.open_device(device_id = 0)
 
 # Create torch tensors with element data type torch.float32
-torch_tensor_a = torch.Tensor([[2, 3, 4], [5, 6, 7]]).to(dtype=torch.uint32)
-torch_tensor_b = torch.Tensor([[6, 7, 8], [3, 2, 1]]).to(dtype=torch.uint32)
+torch_tensor_a = torch.Tensor([[2, 3, 4], [5, 6, 7]]).to(dtype=torch.float32)
+torch_tensor_b = torch.Tensor([[6, 7, 8], [3, 2, 1]]).to(dtype=torch.float32)
 
 # Convert torch tensors to ttnn tensors
 # Note: that the resultant ttnn tensors are still in the host's memory
 # Note: binary element wise operations require the tensor operands to be in TILE_LAYOUT layout
-tensor_a = ttnn.from_torch(torch_tensor_a, dtype=ttnn.uint32, layout=ttnn.TILE_LAYOUT)
-tensor_b = ttnn.from_torch(torch_tensor_b, dtype=ttnn.uint32, layout=ttnn.TILE_LAYOUT)
+tensor_a = ttnn.from_torch(torch_tensor_a, dtype=ttnn.float32, layout=ttnn.TILE_LAYOUT)
+tensor_b = ttnn.from_torch(torch_tensor_b, dtype=ttnn.float32, layout=ttnn.TILE_LAYOUT)
 
 print('Torch: ')
 print('\ttensor_a: ' + str(torch_tensor_a))
