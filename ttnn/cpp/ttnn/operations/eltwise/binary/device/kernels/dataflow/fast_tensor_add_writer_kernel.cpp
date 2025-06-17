@@ -13,7 +13,7 @@ void kernel_main()
 
 	uint32_t output_ptr = get_read_ptr(output_cb_index);
 	uint32_t size = num_columns * 4;
-	tt::tt_metal::memcpy((void*)output_l1_addr, (void*)output_ptr, size);
+	std::memcpy((void*)output_l1_addr, (void*)output_ptr, size);
 
 	cb_pop_front(output_cb_index, 1);
 }
