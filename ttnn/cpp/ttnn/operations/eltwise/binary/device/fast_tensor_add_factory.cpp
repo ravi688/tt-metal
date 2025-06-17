@@ -44,8 +44,9 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
         tensor_shape[1]
     };
 
-    ComputeConfig compute_kernel_config { };
-    compute_kernel_config.compile_args = std::move(compute_kernel_compute_args);
+    tt::tt_metal::ComputeConfig compute_kernel_config { };
+    tt::tt_metal::ReaderDataMovementConfig reader_kernel_config { };
+    tt::tt_metal::WriterDataMovementConfig writer_kernel_config { };
 
     const uint32_t num_rows = tensor_shape[0];
     assert(num_rows >= 1);
@@ -64,11 +65,11 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
                                                         core_range, std::move(compute_kernel_config));
 
     // Circular buffer configs
-    tt::tt_metal::CircularBufferConfig cb_config1 { 32 * 32 * 4, { 0, tt::DataFormat::Float32 } };
+    tt::tt_metal::CircularBufferConfig cb_config1 { 32 * 32 * 4, { { 0, tt::DataFormat::Float32 } } };
     cb_config.set_page_size(0, 32 * 32 * 4);
-    tt::tt_metal::CircularBufferConfig cb_config2 { 32 * 32 * 4, { 1, tt::DataFormat::Float32 } };
+    tt::tt_metal::CircularBufferConfig cb_config2 { 32 * 32 * 4, { { 1, tt::DataFormat::Float32 } } };
     cb_config.set_page_size(1, 32 * 32 * 4);
-    tt::tt_metal::CircularBufferConfig cb_config3 { 32 * 32 * 4, { 2, tt::DataFormat::Float32 } };
+    tt::tt_metal::CircularBufferConfig cb_config3 { 32 * 32 * 4, { { 2, tt::DataFormat::Float32 } } };
     cb_config.set_page_size(2, 32 * 32 * 4);
 
     std::array<uint32_t, 5> reader_kernel_args = { 0, 1, 2,  src1_buffer->address(), src2_buffer->address() };
