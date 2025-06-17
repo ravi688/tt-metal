@@ -47,7 +47,7 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     ComputeConfig compute_kernel_config { };
     compute_kernel_config.compile_args = std::move(compute_kernel_compute_args);
 
-    constexpr CoreRange core_range { { 0, 0 }, { tensor_shape[0], 0 } };
+    const CoreRange core_range { { 0, 0 }, { tensor_shape[0], 0 } };
     // Create Compute kernel (Loads the two tiles from L1 and computes addition and writes back to L1)
     tt::tt_metal::KernelHandle compute_kernel_handle = tt::tt_metal::CreateKernel(program,
                                                         "ttnn/cpp/ttnn/operations/eltwise/binary/device/kernels/compute/fast_tensor_add_kernel.cpp",
