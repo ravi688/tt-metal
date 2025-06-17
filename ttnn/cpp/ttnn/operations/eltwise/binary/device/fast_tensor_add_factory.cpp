@@ -47,11 +47,51 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     ComputeConfig compute_kernel_config { };
     compute_kernel_config.compile_args = std::move(compute_kernel_compute_args);
 
-    const CoreRange core_range { { 0, 0 }, { tensor_shape[0], 0 } };
-    // Create Compute kernel (Loads the two tiles from L1 and computes addition and writes back to L1)
+    const uint32_t num_rows = tensor_shape[0];
+    assert(num_rows >= 1);
+    const CoreRange core_range { { 0, 0 }, { num_rows - 1, 0 } };
+    // Create Reader kernel (loads data from 2 L1 pointers and writes to 2 circular buffers)
+    tt::tt_metal::KernelHandle reader_kernel_handle = tt::tt_metal::CreateKernel(program,
+                                                        "ttnn/cpp/ttnn/operations/eltwise/binary/device/kernels/dataflow/fast_tensor_add_reader_kernel.cpp",
+                                                        core_range, std::move(reader_kernel_config));
+    // Create Writer kernel (reads data from 1 circular buffer and writes to 1 L1 pointer)
+    tt::tt_metal::KernelHandle writer_kernel_handle = tt::tt_metal::CreateKernel(program,
+                                                        "ttnn/cpp/ttnn/operations/eltwise/binary/device/kernels/dataflow/fast_tensor_add_writer_kernel.cpp",
+                                                        core_range, std::move(writer_kernel_config));
+    // Create Compute kernel (reads data from 2 circular buffers, computes, and writes the result to 1 circular buffer)
     tt::tt_metal::KernelHandle compute_kernel_handle = tt::tt_metal::CreateKernel(program,
                                                         "ttnn/cpp/ttnn/operations/eltwise/binary/device/kernels/compute/fast_tensor_add_kernel.cpp",
                                                         core_range, std::move(compute_kernel_config));
+
+    // Circular buffer configs
+    tt::tt_metal::CircularBufferConfig cb_config1 { 32 * 32 * 4, { 0, tt::DataFormat::Float32 } };
+    cb_config.set_page_size(0, 32 * 32 * 4);
+    tt::tt_metal::CircularBufferConfig cb_config2 { 32 * 32 * 4, { 1, tt::DataFormat::Float32 } };
+    cb_config.set_page_size(1, 32 * 32 * 4);
+    tt::tt_metal::CircularBufferConfig cb_config3 { 32 * 32 * 4, { 2, tt::DataFormat::Float32 } };
+    cb_config.set_page_size(2, 32 * 32 * 4);
+
+    std::array<uint32_t, 5> reader_kernel_args = { 0, 1, 2,  src1_buffer->address(), src2_buffer->address() };
+    std::array<uint32_t, 2> writer_kernel_args = { 0, dst_buffer->address() };
+    std::array<uint32_t, 3> compute_kernel_args = { 0, 1, 2 };
+    
+    for(uint32_t i = 0; i < num_rows; ++i)
+    {
+        CoreCoord core { i, 0 }; 
+        // The reader kernel will write to these circular buffers copying from L1
+        // The compute kernel will read from these circular buffers
+        [[maybe_unused]] tt::tt_metal::CBHandle input0_cb_handle = tt::tt_metal::CreateCircularBuffer(program, core, cb_config1);
+        [[maybe_unused]] tt::tt_metal::CBHandle input1_cb_handle = tt::tt_metal::CreateCircularBuffer(program, core, cb_config2);
+
+        // The compute kernel will write to this circular buffer (addition result)
+        // The writer kernel will read from this circular buffer writing to L1
+        [[maybe_unused]] tt::tt_metal::CBHandle output_cb_handle = tt::tt_metal::CreateCircularBuffer(program, core, cb_config3);
+
+        // Set runtime arguments
+        tt::tt_metal::SetRuntimeArgs(program, reader_kernel_handle, core, reader_kernel_args);
+        tt::tt_metal::SetRuntimeArgs(program, writer_kernel_handle, core, writer_kernel_args);
+        tt::tt_metal::SetRuntimeArgs(program, compute_kernel_handle, core, compute_kernel_args);
+    }
 
     return { std::move(program), { .compute_kernel_id = compute_kernel_handle }};
 }

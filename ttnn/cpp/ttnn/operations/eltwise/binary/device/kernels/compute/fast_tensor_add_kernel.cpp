@@ -5,23 +5,35 @@
 #include <cstdint>
 #include "compile_time_args.h"
 #include "compute_kernel_api.h"
+#include "compute_kernel_api/eltwise_binary.h"
 
 using namespace std;
 
 namespace NAMESPACE
 {
 void MAIN {
-    constexpr uint32_t src0_addr = get_compile_time_arg_val(0);
-    constexpr uint32_t src1_addr = get_compile_time_arg_val(1);
-    constexpr uint32_t dst_addr = get_compile_time_arg_val(2);
-    constexpr uint32_t num_columns = get_compile_time_arg_val(3);
 
-    volatile int32_t* src0_ptr = (int32_t*)(src0_addr);
-    volatile int32_t* src1_ptr = (int32_t*)(src1_addr);
+    uint32_t input0_cb_index = get_arg_val<uint32_t>(0);
+    uint32_t input1_cb_index = get_arg_val<uint32_t>(1);
+    uint32_t output_cb_index = get_arg_val<uint32_t>(2);
+    
+    binary_op_init_common(input0_cb_index, input1_cb_index, output_cb_index);
 
-    int32_t* dst_ptr = (int32_t*)(dst_addr);
+    add_tiles_init(input0_cb_index, input1_cb_index);
 
-    for(uint32_t i = 0; i < num_columns; ++i)
-        dst_ptr[i] = src0_ptr[i] + src1_ptr[i];
+    acquire_dst();
+
+    cb_wait_front(input0_cb_index, 1);
+    cb_wait_front(input1_cb_index, 1);
+
+    add_tiles(input0_cb_index, input1_cb_index, 0, 0, 0);
+
+    pack_tile(0, output_cb_index);
+
+    cb_push_back(output_cb_index, 1);
+    cb_pop_front(input0_cb_index, 1);
+    cb_pop_front(input1_cb_index, 1);
+
+    release_dst();
 }
 }
