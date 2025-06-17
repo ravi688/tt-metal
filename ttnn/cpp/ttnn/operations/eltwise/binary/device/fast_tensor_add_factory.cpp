@@ -66,11 +66,11 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
 
     // Circular buffer configs
     tt::tt_metal::CircularBufferConfig cb_config1 { 32 * 32 * 4, { { 0, tt::DataFormat::Float32 } } };
-    cb_config.set_page_size(0, 32 * 32 * 4);
+    cb_config1.set_page_size(0, 32 * 32 * 4);
     tt::tt_metal::CircularBufferConfig cb_config2 { 32 * 32 * 4, { { 1, tt::DataFormat::Float32 } } };
-    cb_config.set_page_size(1, 32 * 32 * 4);
+    cb_config2.set_page_size(1, 32 * 32 * 4);
     tt::tt_metal::CircularBufferConfig cb_config3 { 32 * 32 * 4, { { 2, tt::DataFormat::Float32 } } };
-    cb_config.set_page_size(2, 32 * 32 * 4);
+    cb_config3.set_page_size(2, 32 * 32 * 4);
 
     std::array<uint32_t, 5> reader_kernel_args = { 0, 1, 2,  src1_buffer->address(), src2_buffer->address() };
     std::array<uint32_t, 2> writer_kernel_args = { 0, dst_buffer->address() };
