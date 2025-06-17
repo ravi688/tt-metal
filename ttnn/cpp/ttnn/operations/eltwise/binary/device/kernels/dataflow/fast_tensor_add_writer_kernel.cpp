@@ -2,6 +2,7 @@
 #include "dataflow_api.h"
 
 #include <cstdint>
+#include <cstring>
 
 void kernel_main()
 {
