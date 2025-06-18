@@ -24,7 +24,10 @@ void kernel_main()
 	uint32_t input1_ptr = get_write_ptr(input1_cb_index);
 
 	uint32_t size = num_columns * 4;
+
+	// TODO: Replace this with noc based copy
 	std::memcpy((void*)input0_ptr, (void*)input0_l1_addr, size);
+	// TODO: Replace this with noc based copy
 	std::memcpy((void*)input1_ptr, (void*)input1_l1_addr, size);
 
 	cb_push_back(input0_cb_index, 1);
