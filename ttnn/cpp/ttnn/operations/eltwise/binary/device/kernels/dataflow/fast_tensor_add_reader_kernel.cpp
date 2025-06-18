@@ -34,5 +34,5 @@ void kernel_main()
 	cb_push_back(input0_cb_index, 1);
 	cb_push_back(input1_cb_index, 2);
 
-	DPRINT << "(reader) finished" << END();
+	DPRINT << "(reader) finished" << ENDL();
 }

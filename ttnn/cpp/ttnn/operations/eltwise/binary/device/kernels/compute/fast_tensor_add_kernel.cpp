@@ -37,6 +37,6 @@ void MAIN {
 
     release_dst();
 
-    DPRINT << "(compute) finished" << END();
+    DPRINT << "(compute) finished" << ENDL();
 }
 }

@@ -20,4 +20,6 @@ void kernel_main()
 	std::memcpy((void*)output_l1_addr, (void*)output_ptr, size);
 
 	cb_pop_front(output_cb_index, 1);
+
+	DPRINT << "(writer) finished" << ENDL();
 }
