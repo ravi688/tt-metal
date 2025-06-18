@@ -6,6 +6,7 @@
 #include "compile_time_args.h"
 #include "compute_kernel_api.h"
 #include "compute_kernel_api/eltwise_binary.h"
+#include "debug/dprint.h"
 
 using namespace std;
 
@@ -35,5 +36,7 @@ void MAIN {
     cb_pop_front(input1_cb_index, 1);
 
     release_dst();
+
+    DPRINT << "(compute) finished" << END();
 }
 }

@@ -1,5 +1,6 @@
 
 #include "dataflow_api.h"
+#include "debug/dprint.h"
 
 #include <cstdint>
 #include <cstring>

@@ -1,5 +1,6 @@
 
 #include "dataflow_api.h"
+#include "debug/dprint.h"
 
 #include <cstdint>
 #include <cstring>
@@ -32,4 +33,6 @@ void kernel_main()
 
 	cb_push_back(input0_cb_index, 1);
 	cb_push_back(input1_cb_index, 2);
+
+	DPRINT << "(reader) finished" << END();
 }
