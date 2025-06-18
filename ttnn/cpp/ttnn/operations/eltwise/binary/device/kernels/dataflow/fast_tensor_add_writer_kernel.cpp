@@ -13,11 +13,15 @@ void kernel_main()
 
 	cb_wait_front(output_cb_index, 1);
 
+	DPRINT << "(writer) got a tile in output cb" << ENDL();
+
 	uint32_t output_ptr = get_read_ptr(output_cb_index);
 	uint32_t size = num_columns * 4;
 
 	// TODO: Replace this with noc based copy
 	std::memcpy((void*)output_l1_addr, (void*)output_ptr, size);
+
+	DPRINT << "(writer) did memcpy " << ENDL();
 
 	cb_pop_front(output_cb_index, 1);
 

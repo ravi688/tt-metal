@@ -21,6 +21,8 @@ void kernel_main()
 	cb_reserve_back(input0_cb_index, 1);
 	cb_reserve_back(input1_cb_index, 2);
 
+	DPRINT << "(reader) reserved tiles in input cb(s) " << ENDL();
+
 	uint32_t input0_ptr = get_write_ptr(input0_cb_index);
 	uint32_t input1_ptr = get_write_ptr(input1_cb_index);
 
@@ -30,6 +32,8 @@ void kernel_main()
 	std::memcpy((void*)input0_ptr, (void*)input0_l1_addr, size);
 	// TODO: Replace this with noc based copy
 	std::memcpy((void*)input1_ptr, (void*)input1_l1_addr, size);
+
+	DPRINT << "(reader) did memcpy " << ENDL();
 
 	cb_push_back(input0_cb_index, 1);
 	cb_push_back(input1_cb_index, 2);

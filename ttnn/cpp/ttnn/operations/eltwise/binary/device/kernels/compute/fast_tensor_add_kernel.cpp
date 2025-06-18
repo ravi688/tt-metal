@@ -24,8 +24,10 @@ void MAIN {
 
     acquire_dst();
 
+    DPRINT << "(compute) dst reg acquired " << ENDL();
     cb_wait_front(input0_cb_index, 1);
     cb_wait_front(input1_cb_index, 1);
+    DPRINT << "(compute) got tiles in input cb(s)" << ENDL();
 
     add_tiles(input0_cb_index, input1_cb_index, 0, 0, 0);
 
