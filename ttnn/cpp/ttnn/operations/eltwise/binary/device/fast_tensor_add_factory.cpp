@@ -24,9 +24,9 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     const auto& input_tensor_b = tensor_args.input_tensor_b;
     auto& output_tensor = tensor_return_value;
 
-    auto src1_buffer = input_tensor_a.buffer();
-    auto src2_buffer = input_tensor_b.buffer();
-    auto dst_buffer = output_tensor.buffer();
+    auto src1_buffer = input_tensor_a.mesh_buffer();
+    auto src2_buffer = input_tensor_b.mesh_buffer();
+    auto dst_buffer = output_tensor.mesh_buffer();
 
 
     // Create a program
