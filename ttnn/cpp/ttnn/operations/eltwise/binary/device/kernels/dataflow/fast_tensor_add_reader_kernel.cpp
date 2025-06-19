@@ -21,7 +21,7 @@ void kernel_main()
 	DPRINT << "(reader) trying to reserve tiles in input cb(s) " << ENDL();
 
 	cb_reserve_back(input0_cb_index, 1);
-	cb_reserve_back(input1_cb_index, 2);
+	cb_reserve_back(input1_cb_index, 1);
 
 	DPRINT << "(reader) reserved tiles in input cb(s) " << ENDL();
 
@@ -38,7 +38,7 @@ void kernel_main()
 	DPRINT << "(reader) did memcpy " << ENDL();
 
 	cb_push_back(input0_cb_index, 1);
-	cb_push_back(input1_cb_index, 2);
+	cb_push_back(input1_cb_index, 1);
 
 	DPRINT << "(reader) finished" << ENDL();
 }
