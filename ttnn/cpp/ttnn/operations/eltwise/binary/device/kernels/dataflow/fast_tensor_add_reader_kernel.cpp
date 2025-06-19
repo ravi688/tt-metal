@@ -18,6 +18,8 @@ void kernel_main()
 
 	uint32_t num_columns = get_arg_val<uint32_t>(5);
 
+	DPRINT << "num_coulmns: " << num_columns << ENDL();
+
 	DPRINT << "input0 row: ";
 	float* flts0 = reinterpret_cast<float*>(input0_l1_addr);
 	for(uint32_t i = 0; i < num_columns; ++i)
