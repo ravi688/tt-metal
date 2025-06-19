@@ -34,22 +34,15 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
 
     const auto& tensor_shape = input_tensor_a.logical_shape();
 
-    std::cout << "Tensor Shape: " << tensor_shape[0] << " x " << tensor_shape[1] << std::endl;
+    const uint32_t num_rows = tensor_shape[0];
+    const uint32_t num_columns = tensor_shape[1];
 
-    std::vector<uint32_t> compute_kernel_compute_args = 
-    {
-        src1_buffer->address(),
-        src2_buffer->address(),
-        dst_buffer->address(),
-        tensor_shape[1]
-    };
+    std::cout << "Tensor Shape: " << num_rows << " x " << num_columns << std::endl;
 
     tt::tt_metal::ComputeConfig compute_kernel_config { };
     tt::tt_metal::ReaderDataMovementConfig reader_kernel_config { };
     tt::tt_metal::WriterDataMovementConfig writer_kernel_config { };
 
-    const uint32_t num_rows = tensor_shape[0];
-    const uint32_t num_columns = tensor_shape[1];
     assert(num_rows >= 1);
     const CoreRange core_range { { 0, 0 }, { num_rows - 1, 0 } };
     // Create Reader kernel (loads data from 2 L1 pointers and writes to 2 circular buffers)
