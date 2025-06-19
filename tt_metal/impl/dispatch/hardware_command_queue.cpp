@@ -566,7 +566,11 @@ void HWCommandQueue::finish(tt::stl::Span<const SubDeviceId> sub_device_ids) {
     } else {
         std::unique_lock<std::mutex> lock(this->reads_processed_cv_mutex_);
         this->reads_processed_cv_.wait(
-            lock, [this] { return this->num_entries_in_completion_q_ == this->num_completed_completion_q_reads_; });
+            lock, [this]
+            { 
+                std::cout << "this->num_entries_in_completion_q_: " << this->num_entries_in_completion_q_ << ", this->num_completed_completion_q_reads_: " << this->num_completed_completion_q_reads_ << std::endl;
+                return this->num_entries_in_completion_q_ == this->num_completed_completion_q_reads_; 
+            });
     }
 }
 
