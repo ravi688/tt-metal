@@ -49,6 +49,7 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     tt::tt_metal::WriterDataMovementConfig writer_kernel_config { };
 
     const uint32_t num_rows = tensor_shape[0];
+    const uint32_t num_columns = tensor_shape[1];
     assert(num_rows >= 1);
     const CoreRange core_range { { 0, 0 }, { num_rows - 1, 0 } };
     // Create Reader kernel (loads data from 2 L1 pointers and writes to 2 circular buffers)
@@ -72,9 +73,9 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     tt::tt_metal::CircularBufferConfig cb_config3 { 32 * 32 * 4, { { 2, tt::DataFormat::Float32 } } };
     cb_config3.set_page_size(2, 32 * 32 * 4);
 
-    std::array<uint32_t, 5> reader_kernel_args = { 0, 1, 2,  src1_buffer->address(), src2_buffer->address() };
-    std::array<uint32_t, 2> writer_kernel_args = { 0, dst_buffer->address() };
-    std::array<uint32_t, 3> compute_kernel_args = { 0, 1, 2 };
+    std::array<uint32_t, 5> reader_kernel_args = { 0, 1, 2,  src1_buffer->address(), src2_buffer->address(), num_columns };
+    std::array<uint32_t, 2> writer_kernel_args = { 0, dst_buffer->address(), num_columns };
+    std::array<uint32_t, 3> compute_kernel_args = { 0, 1, 2, num_columns };
     
     for(uint32_t i = 0; i < num_rows; ++i)
     {
