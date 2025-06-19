@@ -18,6 +18,8 @@ void kernel_main()
 	uint32_t output_ptr = get_read_ptr(output_cb_index);
 	uint32_t size = num_columns * 4;
 
+	reinterpret_cast<float*>(output_ptr);
+
 	// TODO: Replace this with noc based copy
 	std::memcpy((void*)output_l1_addr, (void*)output_ptr, size);
 
