@@ -18,6 +18,8 @@ void kernel_main()
 
 	uint32_t num_columns = get_arg_val<uint32_t>(5);
 
+	DPRINT << "(reader) trying to reserve tiles in input cb(s) " << ENDL();
+
 	cb_reserve_back(input0_cb_index, 1);
 	cb_reserve_back(input1_cb_index, 2);
 
