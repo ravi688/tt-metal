@@ -69,7 +69,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	std::shared_ptr<tt::tt_metal::Buffer> output_l1_buffer = tt::tt_metal::CreateBuffer(l1_buffer_config);
 
 	// Multiple cores will perform the computation (addition)
-	CoreRange core_range { { 0, 0 }, { input0.size(), 0 } };
+	CoreRange core_range { { 0, 0 }, { page_count, 0 } };
 
 	// Create Program
 	tt::tt_metal::Program program = tt::tt_metal::CreateProgram();
