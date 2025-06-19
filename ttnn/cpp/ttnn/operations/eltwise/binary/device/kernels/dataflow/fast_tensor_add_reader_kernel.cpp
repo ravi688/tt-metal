@@ -21,7 +21,7 @@ void kernel_main()
 	DPRINT << "num_coulmns: " << num_columns << ENDL();
 
 	float myFloat = 3.4f;
-	myFlot *= 2.0f;
+	myFloat *= 2.0f;
 	DPRINT << "float support: "<< myFloat << ENDL();
 
 	DPRINT << "input0 row: ";
