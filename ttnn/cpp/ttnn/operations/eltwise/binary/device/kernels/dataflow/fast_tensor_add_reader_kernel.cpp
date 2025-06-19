@@ -20,6 +20,10 @@ void kernel_main()
 
 	DPRINT << "num_coulmns: " << num_columns << ENDL();
 
+	float myFloat = 3.4f;
+	myFlot *= 2.0f;
+	DPRINT << "float support: "<< myFloat << ENDL();
+
 	DPRINT << "input0 row: ";
 	float* flts0 = reinterpret_cast<float*>(input0_l1_addr);
 	for(uint32_t i = 0; i < num_columns; ++i)
