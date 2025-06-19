@@ -73,9 +73,9 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     tt::tt_metal::CircularBufferConfig cb_config3 { 32 * 32 * 4, { { 2, tt::DataFormat::Float32 } } };
     cb_config3.set_page_size(2, 32 * 32 * 4);
 
-    std::array<uint32_t, 5> reader_kernel_args = { 0, 1, 2,  src1_buffer->address(), src2_buffer->address(), num_columns };
-    std::array<uint32_t, 2> writer_kernel_args = { 0, dst_buffer->address(), num_columns };
-    std::array<uint32_t, 3> compute_kernel_args = { 0, 1, 2, num_columns };
+    std::array<uint32_t, 6> reader_kernel_args = { 0, 1, 2,  src1_buffer->address(), src2_buffer->address(), num_columns };
+    std::array<uint32_t, 3> writer_kernel_args = { 0, dst_buffer->address(), num_columns };
+    std::array<uint32_t, 4> compute_kernel_args = { 0, 1, 2, num_columns };
     
     for(uint32_t i = 0; i < num_rows; ++i)
     {
