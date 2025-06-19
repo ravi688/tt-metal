@@ -19,15 +19,15 @@ void kernel_main()
 	uint32_t num_columns = get_arg_val<uint32_t>(5);
 
 	DPRINT << "input0 row: ";
-	float* flts = reinterpret_cast<float*>(input0_l1_addr);
+	float* flts0 = reinterpret_cast<float*>(input0_l1_addr);
 	for(uint32_t i = 0; i < num_columns; ++i)
-		DPRINT << flts[i] << " ";
+		DPRINT << flts0[i] << " ";
 	DPRINT << ENDL();
 
 	DPRINT << "input1 row: ";
-	float* flts = reinterpret_cast<float*>(input1_l1_addr);
+	float* flts1 = reinterpret_cast<float*>(input1_l1_addr);
 	for(uint32_t i = 0; i < num_columns; ++i)
-		DPRINT << flts[i] << " ";
+		DPRINT << flts1[i] << " ";
 	DPRINT << ENDL();
 
 	DPRINT << "(reader) trying to reserve tiles in input cb(s) " << ENDL();
