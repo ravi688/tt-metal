@@ -21,6 +21,7 @@ set(PROGRAMMING_EXAMPLES_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/rpsingh_examples/add_2_integers_in_riscv/add_2_integers_in_riscv_via_L1_rpsingh.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/rpsingh_examples/add_2_integers_in_riscv/add_2_integers_in_riscv_via_L1_multicore_rpsingh.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/rpsingh_examples/add_2_integers_in_riscv/add_2_integers_in_SFPU_rpsingh.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/rpsingh_examples/add_2_integers_in_riscv/add_2_integers_in_SFPU_via_global_circular_buffers_rpsingh.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/sharding/shard_data_rm.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/vecadd_sharding/vecadd_sharding.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/vecadd_multi_core/vecadd_multi_core.cpp
