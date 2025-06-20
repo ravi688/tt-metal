@@ -69,7 +69,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 		.size = input0_buffer_size,
 		.page_size = input0_buffer_size / page_count,
 		.buffer_type = tt::tt_metal::BufferType::L1,
-		.buffer_layout = TensorMemoryLayout::WIDTH_SHARDED,
+		.buffer_layout = tt::tt_metal::TensorMemoryLayout::WIDTH_SHARDED,
 		.shard_parameters = shard_parameters
 	};
 
