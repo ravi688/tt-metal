@@ -41,8 +41,6 @@ void kernel_main()
 	uint64_t input0_l1_noc_addr = get_l1_noc_addr(bank_id, page_size, input0_l1_addr);
 	uint64_t input1_l1_noc_addr = get_l1_noc_addr(bank_id, page_size, input1_l1_addr);
 
-	uint32_t size = num_columns * 4;
-
 	noc_async_read(input0_l1_noc_addr, input0_ptr, page_size);
 	noc_async_read(input1_l1_noc_addr, input1_ptr, page_size);
 
