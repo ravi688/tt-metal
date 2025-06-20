@@ -22,13 +22,14 @@ void MAIN {
     
     init_sfpu(input0_cb_index, input1_cb_index);
 
-
-    tile_regs_acquire();
+    cb_reserve_back(output_cb_index, 1);
 
     DPRINT << "(compute) dst reg acquired " << ENDL();
     cb_wait_front(input0_cb_index, 1);
     cb_wait_front(input1_cb_index, 1);
     DPRINT << "(compute) got tiles in input cb(s)" << ENDL();
+
+    tile_regs_acquire();
 
     copy_tile_to_dst_init_short(input0_cb_index);
     copy_tile(input0_cb_index, 0, 0);
