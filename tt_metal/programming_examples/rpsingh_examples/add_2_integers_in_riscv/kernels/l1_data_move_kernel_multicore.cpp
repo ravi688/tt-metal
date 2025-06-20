@@ -21,5 +21,5 @@ void kernel_main()
 
 	// Perform Addition
 	for(uint32_t i = 0; i < per_core_input_size; ++i)
-		output_l1_ptr[i] = input0_l1_ptr[i] + input1_l1_ptr[i];
+		output_l1_ptr[i] = input0_l1_ptr[i] * 2 + input1_l1_ptr[i];
 }
