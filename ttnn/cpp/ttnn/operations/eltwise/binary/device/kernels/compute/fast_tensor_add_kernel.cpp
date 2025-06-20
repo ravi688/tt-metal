@@ -5,8 +5,9 @@
 #include <cstdint>
 #include "compile_time_args.h"
 #include "compute_kernel_api.h"
-#include "compute_kernel_api/eltwise_binary.h"
 #include "compute_kernel_api/tile_move_copy.h"
+#include "compute_kernel_api/eltwise_unary/eltwise_unary.h"
+#include "compute_kernel_api/eltwise_binary_sfpu.h"
 #include "debug/dprint.h"
 
 using namespace std;
