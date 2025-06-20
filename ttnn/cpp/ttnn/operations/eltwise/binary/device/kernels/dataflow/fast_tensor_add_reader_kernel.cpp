@@ -44,6 +44,8 @@ void kernel_main()
 	noc_async_read(input0_l1_noc_addr, input0_ptr, page_size);
 	noc_async_read(input1_l1_noc_addr, input1_ptr, page_size);
 
+	noc_async_read_barrier();
+
 	DPRINT << "input0 row: ";
 	float* flts0 = reinterpret_cast<float*>(input0_ptr);
 	for(uint32_t i = 0; i < num_columns; ++i)
