@@ -48,14 +48,39 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	// Get Command Queue (id = 0)
 	tt::tt_metal::CommandQueue& command_queue = device->command_queue();
 
-	// Create l1 buffer for input vector 0
-	tt::tt_metal::InterleavedBufferConfig l1_buffer_config
+	uint32_t num_elements_per_page = input.size() / page_count;
+
+	tt::tt_metal::ShardSpec tensor_shard_spec 
+	{
+		{ { { 0, 0 }, { page_count - 1, 0 } } },
+		{ num_elements_per_page, 1 }
+	};
+
+	tt::tt_metal::ShardSpecBuffer shard_parameters
+	{
+		tensor_shard_spec,
+		{ num_elements_per_page, 1 },
+		{ page_count, 1 }
+	};
+
+	tt::tt_metal::ShardedBufferConfig l1_buffer_config
 	{
 		.device = device,
 		.size = input0_buffer_size,
 		.page_size = input0_buffer_size / page_count,
-		.buffer_type = tt::tt_metal::BufferType::L1
+		.buffer_type = tt::tt_metal::BufferType::L1,
+		.buffer_layout = TensorMemoryLayout::WIDTH_SHARDED,
+		.shard_parameters = shard_parameters
 	};
+
+	// Create l1 buffer for input vector 0
+	// tt::tt_metal::InterleavedBufferConfig l1_buffer_config
+	// {
+	// 	.device = device,
+	// 	.size = input0_buffer_size,
+	// 	.page_size = input0_buffer_size / page_count,
+	// 	.buffer_type = tt::tt_metal::BufferType::L1
+	// };
 	std::shared_ptr<tt::tt_metal::Buffer> input0_l1_buffer = tt::tt_metal::CreateBuffer(l1_buffer_config);
 
 	// Create DRAM buffer for input vector 1
