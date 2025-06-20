@@ -23,6 +23,12 @@ void kernel_main()
 	uint64_t output_l1_noc_addr = get_l1_noc_addr(bank_id, page_size, output_l1_addr);
 	noc_async_write(output_ptr, output_l1_noc_addr, page_size);
 
+	DPRINT << "output row: ";
+	float* flts0 = reinterpret_cast<float*>(output_ptr);
+	for(uint32_t i = 0; i < num_columns; ++i)
+		DPRINT << flts0[i] << " ";
+	DPRINT << ENDL();
+
 	DPRINT << "(writer) did memcpy " << ENDL();
 
 	cb_pop_front(output_cb_index, 1);
