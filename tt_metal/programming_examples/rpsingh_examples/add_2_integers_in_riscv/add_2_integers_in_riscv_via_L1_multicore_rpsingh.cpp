@@ -48,7 +48,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	// Get Command Queue (id = 0)
 	tt::tt_metal::CommandQueue& command_queue = device->command_queue();
 
-	uint32_t num_elements_per_page = input.size() / page_count;
+	uint32_t num_elements_per_page = input0.size() / page_count;
 
 	tt::tt_metal::ShardSpec tensor_shard_spec 
 	{
