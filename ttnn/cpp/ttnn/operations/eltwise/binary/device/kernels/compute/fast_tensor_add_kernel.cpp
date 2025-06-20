@@ -6,6 +6,7 @@
 #include "compile_time_args.h"
 #include "compute_kernel_api.h"
 #include "compute_kernel_api/eltwise_binary.h"
+#include "compute_kernel_api/tile_move_copy.h"
 #include "debug/dprint.h"
 
 using namespace std;
@@ -18,20 +19,32 @@ void MAIN {
     uint32_t input1_cb_index = get_arg_val<uint32_t>(1);
     uint32_t output_cb_index = get_arg_val<uint32_t>(2);
     
-    binary_op_init_common(input0_cb_index, input1_cb_index, output_cb_index);
+    init_sfpu(input0_cb_index, input1_cb_index);
 
-    add_tiles_init(input0_cb_index, input1_cb_index);
 
-    acquire_dst();
+    tile_regs_acquire();
 
     DPRINT << "(compute) dst reg acquired " << ENDL();
     cb_wait_front(input0_cb_index, 1);
     cb_wait_front(input1_cb_index, 1);
     DPRINT << "(compute) got tiles in input cb(s)" << ENDL();
 
-    add_tiles(input0_cb_index, input1_cb_index, 0, 0, 0);
+    copy_tile_to_dst_init_short(input0_cb_index);
+    copy_tile(input0_cb_index, 0, 0);
+
+    copy_tile_to_dst_init_short(input1_cb_index);
+    copy_tile(input1_cb_index, 0, 1);
+
+    add_binary_tile_init();
+    add_binary_tile(0, 1);
+
+    tile_regs_commit();
+
+    tile_regs_wait();
 
     pack_tile(0, output_cb_index);
+
+    tile_regs_release();
 
     cb_push_back(output_cb_index, 1);
     cb_pop_front(input0_cb_index, 1);
