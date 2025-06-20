@@ -18,6 +18,9 @@ void kernel_main()
 
 	uint32_t num_columns = get_arg_val<uint32_t>(5);
 
+	uint32_t page_size = get_arg_val<uint32_t>(6);
+	uint32_t bank_id = get_arg_val<uint32_t>(7);
+
 	DPRINT << "num_coulmns: " << num_columns << ENDL();
 
 	float myFloat = 3.4f;
@@ -46,12 +49,13 @@ void kernel_main()
 	uint32_t input0_ptr = get_write_ptr(input0_cb_index);
 	uint32_t input1_ptr = get_write_ptr(input1_cb_index);
 
+	uint64_t input0_l1_noc_addr = get_l1_noc_addr(bank_id, page_size, input0_l1_addr);
+	uint64_t input1_l1_noc_addr = get_l1_noc_addr(bank_id, page_size, input1_l1_addr);
+
 	uint32_t size = num_columns * 4;
 
-	// TODO: Replace this with noc based copy
-	std::memcpy((void*)input0_ptr, (void*)input0_l1_addr, size);
-	// TODO: Replace this with noc based copy
-	std::memcpy((void*)input1_ptr, (void*)input1_l1_addr, size);
+	noc_async_read(input0_l1_noc_addr, input0_ptr, page_size);
+	noc_async_read(input1_l1_noc_addr, input1_ptr, page_size);
 
 	DPRINT << "(reader) did memcpy " << ENDL();
 

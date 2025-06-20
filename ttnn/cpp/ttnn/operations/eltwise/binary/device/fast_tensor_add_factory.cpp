@@ -29,6 +29,10 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     auto dst_buffer = output_tensor.mesh_buffer();
 
 
+    uint32_t page_size = input_tensor_a.page_size();
+
+    assert(page_size == input_tensor_b.page_size() && page_size == output_tensor.page_size());
+
     // Create a program
     tt::tt_metal::Program program = tt::tt_metal::CreateProgram();
 
@@ -44,6 +48,8 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     tt::tt_metal::WriterDataMovementConfig writer_kernel_config { };
 
     assert(num_rows >= 1);
+    assert(input_tensor_a.num_pages() == num_rows && input_tensor_b.num_pages() == num_rows && output_tensor.num_pages() == num_rows);
+    
     const CoreRange core_range { { 0, 0 }, { num_rows - 1, 0 } };
     // Create Reader kernel (loads data from 2 L1 pointers and writes to 2 circular buffers)
     tt::tt_metal::KernelHandle reader_kernel_handle = tt::tt_metal::CreateKernel(program,
@@ -66,12 +72,14 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     tt::tt_metal::CircularBufferConfig cb_config3 { 32 * 32 * 4, { { 2, tt::DataFormat::Float32 } } };
     cb_config3.set_page_size(2, 32 * 32 * 4);
 
-    std::array<uint32_t, 6> reader_kernel_args = { 0, 1, 2,  src1_buffer->address(), src2_buffer->address(), num_columns };
+    std::array<uint32_t, 8> reader_kernel_args = { 0, 1, 2,  src1_buffer->address(), src2_buffer->address(), num_columns, page_size };
     std::array<uint32_t, 3> writer_kernel_args = { 0, dst_buffer->address(), num_columns };
     std::array<uint32_t, 4> compute_kernel_args = { 0, 1, 2, num_columns };
     
     for(uint32_t i = 0; i < num_rows; ++i)
     {
+        reader_kernel_args[7] = i;
+
         CoreCoord core { i, 0 }; 
         // The reader kernel will write to these circular buffers copying from L1
         // The compute kernel will read from these circular buffers
