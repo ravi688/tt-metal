@@ -88,7 +88,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	constexpr uint32_t input0_cb_buffer_size = cb_page_count * cb_page_size;
 	tt::tt_metal::CircularBufferConfig input0_cb_config(input0_cb_buffer_size, { { input0_cb_index, tt::DataFormat::UInt32 } });
 	input0_cb_config.set_page_size(input0_cb_index, cb_page_size);
-	tt::tt_metal::experimental::GlobalCircularBuffer input0_gcb = tt::tt_metal::experimental::CreateGlobalCircularBuffer(device, { { single_core, { { single_core, single_core } } }, input0_cb_buffer_size, tt::tt_metal::BufferType::L1);
+	tt::tt_metal::experimental::GlobalCircularBuffer input0_gcb = tt::tt_metal::experimental::CreateGlobalCircularBuffer(device, { { single_core, { { single_core, single_core } } } }, input0_cb_buffer_size, tt::tt_metal::BufferType::L1);
 	tt::tt_metal::CBHandle input0_cb = tt::tt_metal::experimental::CreateCircularBuffer(program, single_core, input0_cb_config, input0_gcb);
 
 	// Create circular buffer for feeding input (1) data to the compute core
@@ -98,7 +98,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	constexpr uint32_t input1_cb_buffer_size = cb_page_count * cb_page_size;
 	tt::tt_metal::CircularBufferConfig input1_cb_config(input1_cb_buffer_size, { { input1_cb_index, tt::DataFormat::UInt32 } });
 	input1_cb_config.set_page_size(input1_cb_index, cb_page_size);
-	tt::tt_metal::experimental::GlobalCircularBuffer input1_gcb = tt::tt_metal::experimental::CreateGlobalCircularBuffer(device, { { single_core, single_core } }, input1_cb_buffer_size, tt::tt_metal::BufferType::L1);
+	tt::tt_metal::experimental::GlobalCircularBuffer input1_gcb = tt::tt_metal::experimental::CreateGlobalCircularBuffer(device, { { single_core, { { single_core, single_core } } } }, input1_cb_buffer_size, tt::tt_metal::BufferType::L1);
 	tt::tt_metal::CBHandle input1_cb = tt::tt_metal::CreateCircularBuffer(program, single_core, input1_cb_config, input1_gcb);
 
 	// Create circular buffer for collecting output data from the compute core
@@ -108,7 +108,7 @@ static Result add_uint32_vector(const std::vector<uint32_t>& input0, const std::
 	constexpr uint32_t output_cb_buffer_size = cb_page_count * cb_page_size;
 	tt::tt_metal::CircularBufferConfig output_cb_config(output_cb_buffer_size, { { output_cb_index, tt::DataFormat::UInt32 } });
 	output_cb_config.set_page_size(output_cb_index, cb_page_size);
-	tt::tt_metal::experimental::GlobalCircularBuffer input2_gcb = tt::tt_metal::experimental::CreateGlobalCircularBuffer(device, { { single_core, single_core } }, input2_cb_buffer_size, tt::tt_metal::BufferType::L1);
+	tt::tt_metal::experimental::GlobalCircularBuffer input2_gcb = tt::tt_metal::experimental::CreateGlobalCircularBuffer(device, { { single_core, { { single_core, single_core } } } }, input2_cb_buffer_size, tt::tt_metal::BufferType::L1);
 	tt::tt_metal::CBHandle output_cb = tt::tt_metal::CreateCircularBuffer(program, single_core, output_cb_config, input2_gcb);
 
 	// Instantiate Kernels
