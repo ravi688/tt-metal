@@ -29,9 +29,9 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     auto dst_buffer = output_tensor.mesh_buffer();
 
 
-    uint32_t page_size = input_tensor_a.page_size();
+    uint32_t page_size = src1_buffer.page_size();
 
-    assert(page_size == input_tensor_b.page_size() && page_size == output_tensor.page_size());
+    assert(page_size == src2_buffer.page_size() && page_size == dst_buffer.page_size());
 
     // Create a program
     tt::tt_metal::Program program = tt::tt_metal::CreateProgram();
@@ -48,8 +48,8 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     tt::tt_metal::WriterDataMovementConfig writer_kernel_config { };
 
     assert(num_rows >= 1);
-    assert(input_tensor_a.num_pages() == num_rows && input_tensor_b.num_pages() == num_rows && output_tensor.num_pages() == num_rows);
-    
+    assert(src1_buffer.num_pages() == num_rows && src2_buffer.num_pages() == num_rows && dst_buffer.num_pages() == num_rows);
+
     const CoreRange core_range { { 0, 0 }, { num_rows - 1, 0 } };
     // Create Reader kernel (loads data from 2 L1 pointers and writes to 2 circular buffers)
     tt::tt_metal::KernelHandle reader_kernel_handle = tt::tt_metal::CreateKernel(program,
