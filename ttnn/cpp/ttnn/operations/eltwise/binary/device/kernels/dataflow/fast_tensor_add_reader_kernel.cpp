@@ -27,17 +27,6 @@ void kernel_main()
 	myFloat *= 2.0f;
 	DPRINT << "float support: "<< myFloat << ENDL();
 
-	DPRINT << "input0 row: ";
-	float* flts0 = reinterpret_cast<float*>(input0_l1_addr);
-	for(uint32_t i = 0; i < num_columns; ++i)
-		DPRINT << flts0[i] << " ";
-	DPRINT << ENDL();
-
-	DPRINT << "input1 row: ";
-	float* flts1 = reinterpret_cast<float*>(input1_l1_addr);
-	for(uint32_t i = 0; i < num_columns; ++i)
-		DPRINT << flts1[i] << " ";
-	DPRINT << ENDL();
 
 	DPRINT << "(reader) trying to reserve tiles in input cb(s) " << ENDL();
 
@@ -56,6 +45,18 @@ void kernel_main()
 
 	noc_async_read(input0_l1_noc_addr, input0_ptr, page_size);
 	noc_async_read(input1_l1_noc_addr, input1_ptr, page_size);
+
+	DPRINT << "input0 row: ";
+	float* flts0 = reinterpret_cast<float*>(input0_ptr);
+	for(uint32_t i = 0; i < num_columns; ++i)
+		DPRINT << flts0[i] << " ";
+	DPRINT << ENDL();
+
+	DPRINT << "input1 row: ";
+	float* flts1 = reinterpret_cast<float*>(input1_ptr);
+	for(uint32_t i = 0; i < num_columns; ++i)
+		DPRINT << flts1[i] << " ";
+	DPRINT << ENDL();
 
 	DPRINT << "(reader) did memcpy " << ENDL();
 
