@@ -11,16 +11,15 @@ void kernel_main()
 	// Circular buffer indices
 	uint32_t input0_cb_index = get_arg_val<uint32_t>(0);
 	uint32_t input1_cb_index = get_arg_val<uint32_t>(1);
-	uint32_t output_cb_index = get_arg_val<uint32_t>(2);
 
 	// L1 addresses
-	uint32_t input0_l1_addr = get_arg_val<uint32_t>(3);
-	uint32_t input1_l1_addr = get_arg_val<uint32_t>(4);
+	uint32_t input0_l1_addr = get_arg_val<uint32_t>(2);
+	uint32_t input1_l1_addr = get_arg_val<uint32_t>(3);
 
-	uint32_t num_columns = get_arg_val<uint32_t>(5);
+	uint32_t num_columns = get_arg_val<uint32_t>(4);
 
-	uint32_t page_size = get_arg_val<uint32_t>(6);
-	uint32_t bank_id = get_arg_val<uint32_t>(7);
+	uint32_t page_size = get_arg_val<uint32_t>(5);
+	uint32_t bank_id = get_arg_val<uint32_t>(6);
 
 	DPRINT << "num_coulmns: " << num_columns << ENDL();
 
