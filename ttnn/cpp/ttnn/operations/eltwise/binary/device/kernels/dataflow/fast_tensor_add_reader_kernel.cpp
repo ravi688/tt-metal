@@ -39,15 +39,13 @@ void kernel_main()
 	InterleavedAddrGen<false> input0_l1_addr_gen 
 	{
 		.bank_base_address = input0_l1_addr,
-		.page_size = page_size,
-		.data_format = get_dataformat(input0_cb_index)
+		.page_size = page_size
 	};
 
 	InterleavedAddrGen<false> input1_l1_addr_gen 
 	{
 		.bank_base_address = input1_l1_addr,
-		.page_size = page_size,
-		.data_format = get_dataformat(input1_cb_index)
+		.page_size = page_size
 	};
 
 	uint32_t input0_ptr = get_write_ptr(input0_cb_index);
