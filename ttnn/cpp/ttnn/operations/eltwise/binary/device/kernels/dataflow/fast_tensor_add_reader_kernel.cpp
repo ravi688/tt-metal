@@ -1,7 +1,7 @@
 
 #include "dataflow_api.h"
 #include "debug/dprint.h"
-#include "common/dprint_array.h"
+#include "utils/dprint_array.h"
 
 #include <cstdint>
 #include <cstring>
