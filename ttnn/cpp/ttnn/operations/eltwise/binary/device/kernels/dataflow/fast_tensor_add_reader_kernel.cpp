@@ -1,6 +1,7 @@
 
 #include "dataflow_api.h"
 #include "debug/dprint.h"
+#include "common/dprint_array.h"
 
 #include <cstdint>
 #include <cstring>
@@ -47,16 +48,10 @@ void kernel_main()
 	noc_async_read_barrier();
 
 	DPRINT << "input0 row: ";
-	float* flts0 = reinterpret_cast<float*>(input0_ptr);
-	for(uint32_t i = 0; i < num_columns; ++i)
-		DPRINT << flts0[i] << " ";
-	DPRINT << ENDL();
+	dprint_array<float>(input0_ptr, 0, num_columns);
 
 	DPRINT << "input1 row: ";
-	float* flts1 = reinterpret_cast<float*>(input1_ptr);
-	for(uint32_t i = 0; i < num_columns; ++i)
-		DPRINT << flts1[i] << " ";
-	DPRINT << ENDL();
+	dprint_array<float>(input1_ptr, 0, num_columns);
 
 	DPRINT << "(reader) did memcpy " << ENDL();
 

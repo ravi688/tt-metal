@@ -1,6 +1,7 @@
 
 #include "dataflow_api.h"
 #include "debug/dprint.h"
+#include "common/dprint_array.h"
 
 #include <cstdint>
 #include <cstring>
@@ -24,8 +25,8 @@ void kernel_main()
 
 	noc_async_write_barrier();
 
-	float* flts0 = reinterpret_cast<float*>(output_ptr);
-	for(uint32_t i = 0; i < num_columns; ++i)
+	DPRINT << "(writer) output row: ";
+	dprint_array<float>(output_ptr, 0, num_columns);
 		DPRINT << flts0[i] << " ";
 	DPRINT << ENDL();
 
