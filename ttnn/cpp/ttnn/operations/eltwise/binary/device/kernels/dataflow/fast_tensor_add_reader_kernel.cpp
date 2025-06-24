@@ -56,8 +56,8 @@ void kernel_main()
 	// uint64_t input0_l1_noc_addr = get_l1_noc_addr(bank_id, page_size, input0_l1_addr);
 	// uint64_t input1_l1_noc_addr = get_l1_noc_addr(bank_id, page_size, input1_l1_addr);
 
-	noc_async_read_tile(0, input0_l1_addr_gen, input0_ptr);
-	noc_async_read_tile(0, input1_l1_addr_gen, input1_ptr);
+	noc_async_read_page(0, input0_l1_addr_gen, input0_ptr);
+	noc_async_read_page(0, input1_l1_addr_gen, input1_ptr);
 
 	noc_async_read_barrier();
 
