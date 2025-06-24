@@ -27,8 +27,6 @@ void kernel_main()
 
 	DPRINT << "(writer) output row: ";
 	dprint_array<float>(output_ptr, 0, num_columns);
-		DPRINT << flts0[i] << " ";
-	DPRINT << ENDL();
 
 	DPRINT << "(writer) did memcpy " << ENDL();
 
