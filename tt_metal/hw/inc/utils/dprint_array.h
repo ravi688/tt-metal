@@ -1,8 +1,7 @@
 #include "debug/dprint.h"
-#include <concepts>
 
-template<typename T, std::unsigned_integral Addr>
-void dprint_array(Addr addr, uint32_t start, uint32_t end)
+template<typename T>
+void dprint_array(uint32_t addr, uint32_t start, uint32_t end)
 {
 	T* ptr = reinterpret_cast<T*>(addr);
 	uint32_t len = end - start;
