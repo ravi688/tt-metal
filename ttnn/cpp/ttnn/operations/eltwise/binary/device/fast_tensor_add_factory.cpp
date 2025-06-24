@@ -73,12 +73,13 @@ FastTensorAddDeviceOperation::SingleCore::cached_program_t FastTensorAddDeviceOp
     cb_config3.set_page_size(2, 32 * 32 * 4);
 
     std::array<uint32_t, 8> reader_kernel_args = { 0, 1, 2,  src1_buffer->address(), src2_buffer->address(), num_columns, page_size };
-    std::array<uint32_t, 3> writer_kernel_args = { 0, dst_buffer->address(), num_columns };
+    std::array<uint32_t, 5> writer_kernel_args = { 0, dst_buffer->address(), num_columns, page_size };
     std::array<uint32_t, 4> compute_kernel_args = { 0, 1, 2, num_columns };
     
     for(uint32_t i = 0; i < num_rows; ++i)
     {
         reader_kernel_args[7] = i;
+        writer_kernel_args[4] = i;
 
         CoreCoord core { i, 0 }; 
         // The reader kernel will write to these circular buffers copying from L1
