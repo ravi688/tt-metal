@@ -14,8 +14,8 @@ void dprint_array(uint32_t addr, uint32_t start, uint32_t end)
 		start = len - 8;
 		end = len;
 		DPRINT << "... ";
+		for(uint32_t i = start; i < end; ++i)
+			DPRINT << ptr[i] << " ";
 	}
-	for(uint32_t i = start; i < end; ++i)
-		DPRINT << ptr[i] << " ";
 	DPRINT << ENDL();
 }
