@@ -20,7 +20,7 @@ void MAIN {
     uint32_t input1_cb_index = get_arg_val<uint32_t>(1);
     uint32_t output_cb_index = get_arg_val<uint32_t>(2);
     
-    init_sfpu(input0_cb_index, input1_cb_index);
+    init_sfpu(input0_cb_index, output_cb_index);
 
     cb_reserve_back(output_cb_index, 1);
 
