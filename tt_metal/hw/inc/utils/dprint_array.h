@@ -11,7 +11,7 @@ void dprint_array(uint32_t addr, uint32_t start, uint32_t end)
 		DPRINT << ptr[i] << " ";
 	if(len > 16)
 	{
-		start = end;
+		start = len - 8;
 		end = len;
 		DPRINT << "... ";
 	}
