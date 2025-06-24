@@ -36,14 +36,14 @@ void kernel_main()
 
 	DPRINT << "(reader) reserved tiles in input cb(s) " << ENDL();
 
-	interleaved_addr_gen::InterleavedAddrGenFast<false> input0_l1_addr_gen 
+	InterleavedAddrGenFast<false> input0_l1_addr_gen 
 	{
 		.bank_base_address = input0_l1_addr,
 		.page_size = page_size,
 		.data_format = get_dataformat(input0_cb_index)
 	};
 
-	interleaved_addr_gen::InterleavedAddrGenFast<false> input1_l1_addr_gen 
+	InterleavedAddrGenFast<false> input1_l1_addr_gen 
 	{
 		.bank_base_address = input1_l1_addr,
 		.page_size = page_size,
