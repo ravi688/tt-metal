@@ -1,5 +1,6 @@
 
 #include "dataflow_api.h"
+#include "dataflow_api_addrgen.h"
 #include "debug/dprint.h"
 #include "utils/dprint_array.h"
 
@@ -35,14 +36,28 @@ void kernel_main()
 
 	DPRINT << "(reader) reserved tiles in input cb(s) " << ENDL();
 
+	interleaved_addr_gen::InterleavedAddrGenFast<false> input0_l1_addr_gen 
+	{
+		.bank_base_address = input0_l1_addr,
+		.page_size = page_size,
+		.data_format = get_dataformat(input0_cb_index)
+	};
+
+	interleaved_addr_gen::InterleavedAddrGenFast<false> input1_l1_addr_gen 
+	{
+		.bank_base_address = input1_l1_addr,
+		.page_size = page_size,
+		.data_format = get_dataformat(input1_cb_index)
+	};
+
 	uint32_t input0_ptr = get_write_ptr(input0_cb_index);
 	uint32_t input1_ptr = get_write_ptr(input1_cb_index);
 
-	uint64_t input0_l1_noc_addr = get_l1_noc_addr(bank_id, page_size, input0_l1_addr);
-	uint64_t input1_l1_noc_addr = get_l1_noc_addr(bank_id, page_size, input1_l1_addr);
+	// uint64_t input0_l1_noc_addr = get_l1_noc_addr(bank_id, page_size, input0_l1_addr);
+	// uint64_t input1_l1_noc_addr = get_l1_noc_addr(bank_id, page_size, input1_l1_addr);
 
-	noc_async_read(input0_l1_noc_addr, input0_ptr, page_size);
-	noc_async_read(input1_l1_noc_addr, input1_ptr, page_size);
+	noc_async_read_tile(0, input0_l1_addr_gen, input0_ptr);
+	noc_async_read_tile(0, input1_l1_addr_gen, input1_ptr);
 
 	noc_async_read_barrier();
 
